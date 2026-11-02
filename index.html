@@ -1,426 +1,697 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <meta name="theme-color" content="#07131f">
-    <meta name="description" content="MEKA CHAT - تواصل بلا حدود">
+  <title>MEKA — ميكا</title>
 
-    <title>MEKA CHAT | ميكا شات</title>
+  <meta name="description" content="MEKA — منصة التواصل والمراسلة الحديثة">
+  <meta name="theme-color" content="#071c18">
 
-    <!-- أيقونة التطبيق -->
-    <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='27' fill='%230a9d85'/%3E%3Cpath d='M22 29Q22 20 32 20H68Q78 20 78 30V60Q78 70 68 70H49L31 84V70H32Q22 70 22 60Z' fill='white'/%3E%3Cpath d='M35 42L45 52L65 35' stroke='%230a9d85' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MEKA">
 
-    <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./assets/icon-192.png">
+  <link rel="apple-touch-icon" href="./assets/icon-192.png">
 
-    <!--
-      مؤقت شاشة البداية مستقل داخل index.html
-      لا يعتمد على app.js أو أي ملف خارجي.
-    -->
-    <script>
-        (function () {
-            const startTime = Date.now();
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-            function finishSplash() {
-                const splash = document.getElementById("splash-screen");
-                const application = document.getElementById("app-shell");
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-                if (!splash || !application) return;
-
-                splash.classList.add("splash-hidden");
-                application.classList.add("app-visible");
-
-                document.body.classList.add("app-started");
-
-                setTimeout(() => {
-                    splash.remove();
-                }, 700);
-            }
-
-            const remainingTime = Math.max(
-                0,
-                5000 - (Date.now() - startTime)
-            );
-
-            window.addEventListener("DOMContentLoaded", function () {
-                setTimeout(finishSplash, remainingTime);
-            }, { once: true });
-        })();
-    </script>
+  <link rel="stylesheet" href="./styles.css">
 </head>
 
 <body>
 
-    <!-- =================================
-         شاشة البداية MEKA SPLASH SCREEN
-    ================================== -->
+  <!-- شاشة البداية -->
+  <section id="splashScreen" class="splash-screen">
 
-    <section id="splash-screen" class="splash-screen">
+    <div class="splash-content">
 
-        <div class="splash-background">
-            <div class="glow glow-one"></div>
-            <div class="glow glow-two"></div>
-            <div class="glow glow-three"></div>
+      <div class="brand-symbol">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <defs>
+            <linearGradient id="mekaGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#52e5a4"/>
+              <stop offset="100%" stop-color="#00a878"/>
+            </linearGradient>
+          </defs>
+
+          <path
+            d="M20 76V27C20 20 29 17 34 23L50 42L66 23C71 17 80 20 80 27V76H65V45L50 63L35 45V76Z"
+            fill="url(#mekaGradient)"
+          />
+        </svg>
+      </div>
+
+      <h1 class="splash-brand">MEKA</h1>
+      <p class="splash-subtitle">كل تواصلك في مكان واحد</p>
+
+      <div class="splash-loader">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+    </div>
+
+    <div class="splash-footer">
+      MEKA SOCIAL EXPERIENCE
+    </div>
+
+  </section>
+
+
+  <!-- التطبيق -->
+  <main id="appRoot" class="app-root hidden">
+
+    <!-- الشريط العلوي -->
+    <header class="top-header">
+
+      <div class="header-brand">
+
+        <div class="mini-brand-symbol">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <path
+              d="M20 76V27C20 20 29 17 34 23L50 42L66 23C71 17 80 20 80 27V76H65V45L50 63L35 45V76Z"
+              fill="currentColor"
+            />
+          </svg>
         </div>
 
-        <div class="splash-content">
-
-            <div class="brand-icon-wrap">
-
-                <div class="icon-orbit orbit-one"></div>
-                <div class="icon-orbit orbit-two"></div>
-
-                <div class="brand-icon">
-
-                    <svg viewBox="0 0 100 100"
-                         xmlns="http://www.w3.org/2000/svg"
-                         role="img"
-                         aria-label="MEKA Logo">
-
-                        <defs>
-                            <linearGradient id="mekaGradient"
-                                x1="0%" y1="0%" x2="100%" y2="100%">
-
-                                <stop offset="0%" stop-color="#42e8c4"/>
-                                <stop offset="100%" stop-color="#079b83"/>
-
-                            </linearGradient>
-
-                            <filter id="logoShadow">
-                                <feGaussianBlur stdDeviation="2"/>
-                            </filter>
-                        </defs>
-
-                        <path
-                            d="M17 29
-                               Q17 17 30 17
-                               H70
-                               Q83 17 83 30
-                               V60
-                               Q83 73 70 73
-                               H48
-                               L27 89
-                               V73
-                               Q17 73 17 60Z"
-                            fill="url(#mekaGradient)"
-                        />
-
-                        <path
-                            d="M32 45
-                               L44 57
-                               L68 34"
-                            stroke="#ffffff"
-                            stroke-width="7"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-
-                        <circle cx="74" cy="24" r="5"
-                                fill="#ffffff" opacity=".9"/>
-
-                    </svg>
-
-                </div>
-
-            </div>
-
-            <div class="splash-brand">
-                <h1>MEKA<span>CHAT</span></h1>
-                <p>عالمك... أقرب إليك</p>
-            </div>
-
-            <div class="splash-loader">
-                <div class="loader-track">
-                    <div class="loader-progress"></div>
-                </div>
-
-                <span>جاري تجهيز عالمك</span>
-            </div>
-
+        <div>
+          <h1>MEKA</h1>
+          <small>ابقَ على اتصال</small>
         </div>
 
-        <div class="splash-footer">
-            MADE FOR CONNECTION
-        </div>
+      </div>
+
+      <div class="header-actions">
+
+        <button id="searchToggle" class="icon-button" aria-label="بحث">
+          <svg viewBox="0 0 24 24">
+            <circle cx="10.8" cy="10.8" r="6.8"></circle>
+            <path d="m16 16 5 5"></path>
+          </svg>
+        </button>
+
+        <button id="notificationsButton" class="icon-button" aria-label="الإشعارات">
+          <svg viewBox="0 0 24 24">
+            <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+            <path d="M10 21h4"></path>
+          </svg>
+          <span id="notificationBadge" class="notification-badge hidden">0</span>
+        </button>
+
+        <button id="profileButton" class="header-avatar" aria-label="الملف الشخصي">
+          <span id="headerAvatarLetter">M</span>
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- البحث -->
+    <section id="searchPanel" class="search-panel hidden">
+
+      <div class="search-box">
+
+        <svg viewBox="0 0 24 24">
+          <circle cx="10.8" cy="10.8" r="6.8"></circle>
+          <path d="m16 16 5 5"></path>
+        </svg>
+
+        <input
+          id="globalSearchInput"
+          type="search"
+          placeholder="ابحث عن أشخاص أو محادثات..."
+          autocomplete="off"
+        >
+
+        <button id="closeSearch" aria-label="إغلاق البحث">×</button>
+
+      </div>
+
+      <div id="searchResults" class="search-results"></div>
 
     </section>
 
 
-    <!-- =================================
-         التطبيق الرئيسي
-    ================================== -->
+    <!-- شاشة تسجيل الدخول -->
+    <section id="authScreen" class="auth-screen hidden">
 
-    <main id="app-shell" class="app-shell">
+      <div class="auth-card">
 
-        <!-- الشريط الجانبي -->
+        <div class="auth-logo">
+          <div class="brand-symbol">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <path
+                d="M20 76V27C20 20 29 17 34 23L50 42L66 23C71 17 80 20 80 27V76H65V45L50 63L35 45V76Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
 
-        <aside class="sidebar">
+          <h2>مرحبًا بك في MEKA</h2>
+          <p>تواصل، شارك، وابقَ قريبًا من الجميع.</p>
+        </div>
 
-            <div class="sidebar-brand">
+        <div id="authMessage" class="form-message hidden"></div>
 
-                <div class="mini-logo">
-                    <svg viewBox="0 0 100 100" aria-hidden="true">
-                        <path
-                            d="M17 29Q17 17 30 17H70Q83 17 83 30V60Q83 73 70 73H48L27 89V73Q17 73 17 60Z"
-                            fill="#14b89a"/>
+        <button id="googleLoginButton" class="google-login-button" type="button">
+          <span class="google-symbol">G</span>
+          المتابعة باستخدام Google
+        </button>
 
-                        <path
-                            d="M32 45L44 57L68 34"
-                            stroke="white"
-                            stroke-width="7"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"/>
-                    </svg>
+        <div class="auth-divider">
+          <span>أو</span>
+        </div>
+
+        <form id="emailLoginForm">
+
+          <label for="authEmail">البريد الإلكتروني</label>
+
+          <input
+            id="authEmail"
+            type="email"
+            placeholder="name@example.com"
+            autocomplete="email"
+            required
+          >
+
+          <label for="authPassword">كلمة المرور</label>
+
+          <input
+            id="authPassword"
+            type="password"
+            placeholder="أدخل كلمة المرور"
+            autocomplete="current-password"
+            required
+          >
+
+          <button id="emailLoginButton" class="primary-button" type="submit">
+            تسجيل الدخول
+          </button>
+
+        </form>
+
+        <div class="auth-switch">
+          <span>ليس لديك حساب؟</span>
+          <button id="showSignupButton" type="button">إنشاء حساب</button>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- إنشاء الحساب -->
+    <section id="signupScreen" class="auth-screen hidden">
+
+      <div class="auth-card">
+
+        <h2>إنشاء حساب MEKA</h2>
+        <p>ابدأ رحلتك وتواصل مع أصدقائك.</p>
+
+        <div id="signupMessage" class="form-message hidden"></div>
+
+        <form id="signupForm">
+
+          <label for="signupName">الاسم الظاهر</label>
+
+          <input
+            id="signupName"
+            type="text"
+            maxlength="60"
+            placeholder="اسمك"
+            required
+          >
+
+          <label for="signupUsername">اسم المستخدم</label>
+
+          <input
+            id="signupUsername"
+            type="text"
+            minlength="3"
+            maxlength="24"
+            placeholder="username"
+            autocomplete="username"
+            required
+          >
+
+          <label for="signupEmail">البريد الإلكتروني</label>
+
+          <input
+            id="signupEmail"
+            type="email"
+            placeholder="name@example.com"
+            autocomplete="email"
+            required
+          >
+
+          <label for="signupPassword">كلمة المرور</label>
+
+          <input
+            id="signupPassword"
+            type="password"
+            minlength="8"
+            placeholder="8 أحرف على الأقل"
+            autocomplete="new-password"
+            required
+          >
+
+          <button id="signupSubmitButton" class="primary-button" type="submit">
+            إنشاء الحساب
+          </button>
+
+        </form>
+
+        <div class="auth-switch">
+          <span>لديك حساب بالفعل؟</span>
+          <button id="showLoginButton" type="button">تسجيل الدخول</button>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- التطبيق الرئيسي -->
+    <section id="mainScreen" class="main-screen hidden">
+
+      <!-- القائمة الجانبية -->
+      <aside id="sideNavigation" class="side-navigation">
+
+        <button class="nav-item active" data-page="chats">
+          <span class="nav-icon">◉</span>
+          <span>المحادثات</span>
+        </button>
+
+        <button class="nav-item" data-page="contacts">
+          <span class="nav-icon">♧</span>
+          <span>جهات الاتصال</span>
+        </button>
+
+        <button class="nav-item" data-page="stories">
+          <span class="nav-icon">◌</span>
+          <span>الحالات</span>
+        </button>
+
+        <button class="nav-item" data-page="calls">
+          <span class="nav-icon">⌕</span>
+          <span>المكالمات</span>
+        </button>
+
+        <button class="nav-item" data-page="feed">
+          <span class="nav-icon">▤</span>
+          <span>المنشورات</span>
+        </button>
+
+        <button class="nav-item" data-page="profile">
+          <span class="nav-icon">◎</span>
+          <span>ملفي الشخصي</span>
+        </button>
+
+        <button class="nav-item" data-page="settings">
+          <span class="nav-icon">⚙</span>
+          <span>الإعدادات</span>
+        </button>
+
+      </aside>
+
+
+      <!-- محتوى التطبيق -->
+      <div class="main-content">
+
+        <!-- صفحة المحادثات -->
+        <section id="chatsPage" class="content-page active">
+
+          <div class="page-heading">
+
+            <div>
+              <h2>المحادثات</h2>
+              <p>رسائلك ومحادثاتك في مكان واحد</p>
+            </div>
+
+            <button id="newChatButton" class="primary-button compact-button">
+              محادثة جديدة
+            </button>
+
+          </div>
+
+          <div class="chat-layout">
+
+            <div class="chat-list-panel">
+
+              <div class="chat-list-heading">
+                <h3>رسائلك</h3>
+                <span id="chatCount">0</span>
+              </div>
+
+              <div id="conversationList" class="conversation-list">
+
+                <div class="empty-state">
+                  <div class="empty-state-icon">M</div>
+                  <h3>لا توجد محادثات حتى الآن</h3>
+                  <p>ابدأ محادثة جديدة مع أحد مستخدمي MEKA.</p>
                 </div>
 
-                <div>
-                    <strong>MEKA</strong>
-                    <span>CHAT</span>
-                </div>
+              </div>
 
             </div>
 
-            <div class="sidebar-user">
 
-                <div class="user-avatar">
-                    <span>م</span>
-                    <i></i>
-                </div>
+            <!-- مساحة المحادثة -->
+            <section id="activeChatPanel" class="active-chat-panel">
 
-                <div class="user-info">
-                    <strong>مرحبًا بك</strong>
-                    <small>في عالم ميكا</small>
-                </div>
+              <div id="chatWelcome" class="chat-welcome">
 
-                <button class="icon-button" id="theme-button"
-                        aria-label="تغيير المظهر">
-                    ◐
-                </button>
+                <div class="welcome-logo">M</div>
 
-            </div>
+                <h2>مرحبًا بك في MEKA</h2>
 
-            <div class="sidebar-section-title">
-                القائمة الرئيسية
-            </div>
+                <p>
+                  اختر محادثة من القائمة أو ابدأ محادثة جديدة.
+                </p>
 
-            <nav class="main-navigation">
-
-                <button class="nav-item active" data-page="chats">
-                    <span class="nav-icon">▤</span>
-                    <span>المحادثات</span>
-                    <span class="nav-count">0</span>
-                </button>
-
-                <button class="nav-item" data-page="status">
-                    <span class="nav-icon">◉</span>
-                    <span>الحالات</span>
-                </button>
-
-                <button class="nav-item" data-page="calls">
-                    <span class="nav-icon">♧</span>
-                    <span>المكالمات</span>
-                </button>
-
-                <button class="nav-item" data-page="contacts">
-                    <span class="nav-icon">♙</span>
-                    <span>جهات الاتصال</span>
-                </button>
-
-            </nav>
-
-            <div class="sidebar-bottom">
-
-                <button class="nav-item" data-page="settings">
-                    <span class="nav-icon">⚙</span>
-                    <span>الإعدادات</span>
-                </button>
-
-                <div class="sidebar-version">
-                    MEKA CHAT · VERSION 1.0
-                </div>
-
-            </div>
-
-        </aside>
+              </div>
 
 
-        <!-- منطقة المحتوى -->
+              <div id="activeChat" class="active-chat hidden">
 
-        <section class="main-content">
+                <header class="active-chat-header">
 
-            <header class="top-header">
+                  <button id="backToChats" class="back-button" aria-label="العودة">
+                    ‹
+                  </button>
 
-                <div>
-                    <div class="header-eyebrow">
-                        YOUR PERSONAL SPACE
-                    </div>
+                  <div id="activeChatAvatar" class="chat-avatar">
+                    M
+                  </div>
 
-                    <h2 id="page-title">المحادثات</h2>
-                </div>
+                  <div class="active-chat-user">
 
-                <div class="header-actions">
+                    <h3 id="activeChatName">المحادثة</h3>
+                    <small id="activeChatStatus">MEKA</small>
 
-                    <button class="header-icon" id="search-button"
-                            aria-label="بحث">
-                        ⌕
+                  </div>
+
+                  <div class="active-chat-actions">
+
+                    <button id="voiceCallButton" class="icon-button" aria-label="مكالمة صوتية">
+                      ☎
                     </button>
 
-                    <button class="new-chat-button" id="new-chat-button">
-                        <span>＋</span>
-                        محادثة جديدة
+                    <button id="videoCallButton" class="icon-button" aria-label="مكالمة فيديو">
+                      ▣
                     </button>
+
+                    <button id="chatMoreButton" class="icon-button" aria-label="المزيد">
+                      ⋮
+                    </button>
+
+                  </div>
+
+                </header>
+
+
+                <div id="messagesContainer" class="messages-container">
+
+                  <div class="messages-placeholder">
+                    لا توجد رسائل في هذه المحادثة.
+                  </div>
 
                 </div>
 
-            </header>
+
+                <div id="replyPreview" class="reply-preview hidden">
+
+                  <div>
+                    <strong>الرد على</strong>
+                    <p id="replyPreviewText"></p>
+                  </div>
+
+                  <button id="cancelReply" type="button">×</button>
+
+                </div>
 
 
-            <div class="content-layout">
+                <form id="messageForm" class="message-composer">
 
-                <!-- قائمة المحادثات -->
+                  <input
+                    id="attachmentInput"
+                    type="file"
+                    accept="image/*,video/*,audio/*,.pdf,.doc,.docx"
+                    hidden
+                  >
 
-                <section class="chat-list-panel">
+                  <button id="attachmentButton" type="button" class="composer-button" aria-label="إرفاق ملف">
+                    ＋
+                  </button>
 
-                    <div class="chat-list-heading">
+                  <input
+                    id="messageInput"
+                    type="text"
+                    maxlength="5000"
+                    placeholder="اكتب رسالتك..."
+                    autocomplete="off"
+                  >
 
-                        <div>
-                            <h3>رسائلك</h3>
-                            <p>كل محادثاتك في مكان واحد</p>
-                        </div>
+                  <button id="sendMessageButton" type="submit" class="send-button" aria-label="إرسال">
+                    ➤
+                  </button>
 
-                        <button class="small-icon-button"
-                                aria-label="خيارات المحادثات">
-                            ⋯
-                        </button>
+                </form>
 
-                    </div>
+              </div>
 
-                    <div class="chat-search">
-                        <span>⌕</span>
-                        <input
-                            type="search"
-                            placeholder="ابحث عن محادثة..."
-                            id="chat-search-input"
-                            aria-label="البحث عن محادثة">
-                    </div>
+            </section>
 
-                    <div class="chat-filters">
-                        <button class="filter-chip selected">الكل</button>
-                        <button class="filter-chip">غير مقروءة</button>
-                        <button class="filter-chip">المفضلة</button>
-                    </div>
-
-                    <div class="empty-chat-list">
-
-                        <div class="empty-chat-icon">
-                            <span>✉</span>
-                        </div>
-
-                        <h3>مساحة جديدة للتواصل</h3>
-
-                        <p>
-                            ستظهر محادثاتك هنا عندما تبدأ التواصل مع أصدقائك.
-                        </p>
-
-                        <button id="start-chat-button">
-                            ابدأ محادثة
-                            <span>←</span>
-                        </button>
-
-                    </div>
-
-                </section>
-
-
-                <!-- مساحة المحادثة -->
-
-                <section class="conversation-panel">
-
-                    <div class="conversation-decoration decoration-one"></div>
-                    <div class="conversation-decoration decoration-two"></div>
-
-                    <div class="welcome-area">
-
-                        <div class="welcome-logo">
-                            <svg viewBox="0 0 100 100" aria-hidden="true">
-
-                                <path
-                                    d="M17 29Q17 17 30 17H70Q83 17 83 30V60Q83 73 70 73H48L27 89V73Q17 73 17 60Z"
-                                    fill="url(#welcomeGradient)"/>
-
-                                <defs>
-                                    <linearGradient id="welcomeGradient"
-                                        x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stop-color="#42e8c4"/>
-                                        <stop offset="100%" stop-color="#079b83"/>
-                                    </linearGradient>
-                                </defs>
-
-                                <path
-                                    d="M32 45L44 57L68 34"
-                                    stroke="white"
-                                    stroke-width="7"
-                                    fill="none"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"/>
-
-                            </svg>
-                        </div>
-
-                        <span class="welcome-label">
-                            WELCOME TO MEKA
-                        </span>
-
-                        <h1>
-                            التواصل أصبح
-                            <span>أقرب</span>
-                        </h1>
-
-                        <p>
-                            ابدأ رحلتك مع MEKA CHAT.
-                            عالم يجمع رسائلك وأصدقاءك ولحظاتك في مكان واحد.
-                        </p>
-
-                        <div class="welcome-features">
-
-                            <div class="feature-pill">
-                                <span>✦</span>
-                                تواصل بسهولة
-                            </div>
-
-                            <div class="feature-pill">
-                                <span>◉</span>
-                                ابقَ قريبًا
-                            </div>
-
-                            <div class="feature-pill">
-                                <span>⌁</span>
-                                عالمك الخاص
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="conversation-footer">
-                        MEKA CHAT · CONNECT YOUR WORLD
-                    </div>
-
-                </section>
-
-            </div>
+          </div>
 
         </section>
 
-    </main>
+
+        <!-- جهات الاتصال -->
+        <section id="contactsPage" class="content-page">
+
+          <div class="page-heading">
+            <div>
+              <h2>جهات الاتصال</h2>
+              <p>ابحث عن أصدقائك على MEKA</p>
+            </div>
+          </div>
+
+          <div class="contact-search-box">
+
+            <input
+              id="contactSearchInput"
+              type="search"
+              placeholder="ابحث بالاسم أو اسم المستخدم أو كود MEKA"
+            >
+
+            <button id="contactSearchButton" class="primary-button">
+              بحث
+            </button>
+
+          </div>
+
+          <div id="contactSearchResults" class="contact-results"></div>
+
+        </section>
 
 
-    <!-- JavaScript الخاص بالتطبيق -->
-    <script src="app.js" defer></script>
+        <!-- الحالات -->
+        <section id="storiesPage" class="content-page">
+
+          <div class="page-heading">
+            <div>
+              <h2>الحالات</h2>
+              <p>شارك لحظاتك مع أصدقائك</p>
+            </div>
+
+            <button id="createStoryButton" class="primary-button compact-button">
+              إضافة حالة
+            </button>
+          </div>
+
+          <div id="storiesList" class="stories-list"></div>
+
+        </section>
+
+
+        <!-- المكالمات -->
+        <section id="callsPage" class="content-page">
+
+          <div class="page-heading">
+            <div>
+              <h2>المكالمات</h2>
+              <p>مكالماتك الصوتية والمرئية</p>
+            </div>
+          </div>
+
+          <div id="callsList" class="calls-list"></div>
+
+        </section>
+
+
+        <!-- المنشورات -->
+        <section id="feedPage" class="content-page">
+
+          <div class="page-heading">
+            <div>
+              <h2>المنشورات</h2>
+              <p>اكتشف ما يشاركه مجتمع MEKA</p>
+            </div>
+          </div>
+
+          <div id="createPostArea" class="create-post-area">
+
+            <textarea
+              id="postContentInput"
+              maxlength="5000"
+              placeholder="بماذا تفكر؟"
+            ></textarea>
+
+            <button id="publishPostButton" class="primary-button">
+              نشر
+            </button>
+
+          </div>
+
+          <div id="feedPosts" class="feed-posts"></div>
+
+        </section>
+
+
+        <!-- الملف الشخصي -->
+        <section id="profilePage" class="content-page">
+
+          <div class="page-heading">
+            <div>
+              <h2>ملفي الشخصي</h2>
+              <p>معلومات حسابك على MEKA</p>
+            </div>
+          </div>
+
+          <div id="profileContent" class="profile-content"></div>
+
+        </section>
+
+
+        <!-- الإعدادات -->
+        <section id="settingsPage" class="content-page">
+
+          <div class="page-heading">
+            <div>
+              <h2>الإعدادات</h2>
+              <p>تحكم في حسابك وتجربتك</p>
+            </div>
+          </div>
+
+          <div class="settings-content">
+
+            <div class="setting-row">
+              <div>
+                <strong>المظهر</strong>
+                <p>اختيار مظهر التطبيق</p>
+              </div>
+
+              <select id="themeSelect">
+                <option value="dark">داكن</option>
+                <option value="light">فاتح</option>
+                <option value="system">حسب الجهاز</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <strong>اللغة</strong>
+                <p>لغة واجهة التطبيق</p>
+              </div>
+
+              <select id="languageSelect">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+
+            <button id="logoutButton" class="danger-button">
+              تسجيل الخروج
+            </button>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </section>
+
+
+    <!-- شريط التنقل للموبايل -->
+    <nav id="mobileNavigation" class="mobile-navigation">
+
+      <button class="mobile-nav-item active" data-page="chats">
+        <span>◉</span>
+        <small>المحادثات</small>
+      </button>
+
+      <button class="mobile-nav-item" data-page="contacts">
+        <span>♧</span>
+        <small>الأشخاص</small>
+      </button>
+
+      <button class="mobile-nav-item" data-page="stories">
+        <span>◌</span>
+        <small>الحالات</small>
+      </button>
+
+      <button class="mobile-nav-item" data-page="calls">
+        <span>⌕</span>
+        <small>المكالمات</small>
+      </button>
+
+      <button class="mobile-nav-item" data-page="profile">
+        <span>◎</span>
+        <small>حسابي</small>
+      </button>
+
+    </nav>
+
+  </main>
+
+
+  <!-- نافذة عامة -->
+  <div id="modalLayer" class="modal-layer hidden">
+
+    <div class="modal-card">
+
+      <button id="closeModalButton" class="modal-close" aria-label="إغلاق">
+        ×
+      </button>
+
+      <div id="modalContent"></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- رسائل التنبيه -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+
+  <!-- مكتبات التطبيق وملف التشغيل -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script type="module" src="./app.js"></script>
 
 </body>
-</html>
+    </html>
