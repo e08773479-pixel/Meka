@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="theme-color" content="#07131f">
+    <meta name="description" content="MEKA CHAT - تواصل بلا حدود">
+
+    <title>MEKA CHAT | ميكا شات</title>
+
+    <!-- أيقونة التطبيق -->
+    <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='27' fill='%230a9d85'/%3E%3Cpath d='M22 29Q22 20 32 20H68Q78 20 78 30V60Q78 70 68 70H49L31 84V70H32Q22 70 22 60Z' fill='white'/%3E%3Cpath d='M35 42L45 52L65 35' stroke='%230a9d85' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!--
+      مؤقت شاشة البداية مستقل داخل index.html
+      لا يعتمد على app.js أو أي ملف خارجي.
+    -->
+    <script>
+        (function () {
+            const startTime = Date.now();
+
+            function finishSplash() {
+                const splash = document.getElementById("splash-screen");
+                const application = document.getElementById("app-shell");
+
+                if (!splash || !application) return;
+
+                splash.classList.add("splash-hidden");
+                application.classList.add("app-visible");
+
+                document.body.classList.add("app-started");
+
+                setTimeout(() => {
+                    splash.remove();
+                }, 700);
+            }
+
+            const remainingTime = Math.max(
+                0,
+                5000 - (Date.now() - startTime)
+            );
+
+            window.addEventListener("DOMContentLoaded", function () {
+                setTimeout(finishSplash, remainingTime);
+            }, { once: true });
+        })();
+    </script>
+</head>
+
+<body>
+
+    <!-- =================================
+         شاشة البداية MEKA SPLASH SCREEN
+    ================================== -->
+
+    <section id="splash-screen" class="splash-screen">
+
+        <div class="splash-background">
+            <div class="glow glow-one"></div>
+            <div class="glow glow-two"></div>
+            <div class="glow glow-three"></div>
+        </div>
+
+        <div class="splash-content">
+
+            <div class="brand-icon-wrap">
+
+                <div class="icon-orbit orbit-one"></div>
+                <div class="icon-orbit orbit-two"></div>
+
+                <div class="brand-icon">
+
+                    <svg viewBox="0 0 100 100"
+                         xmlns="http://www.w3.org/2000/svg"
+                         role="img"
+                         aria-label="MEKA Logo">
+
+                        <defs>
+                            <linearGradient id="mekaGradient"
+                                x1="0%" y1="0%" x2="100%" y2="100%">
+
+                                <stop offset="0%" stop-color="#42e8c4"/>
+                                <stop offset="100%" stop-color="#079b83"/>
+
+                            </linearGradient>
+
+                            <filter id="logoShadow">
+                                <feGaussianBlur stdDeviation="2"/>
+                            </filter>
+                        </defs>
+
+                        <path
+                            d="M17 29
+                               Q17 17 30 17
+                               H70
+                               Q83 17 83 30
+                               V60
+                               Q83 73 70 73
+                               H48
+                               L27 89
+                               V73
+                               Q17 73 17 60Z"
+                            fill="url(#mekaGradient)"
+                        />
+
+                        <path
+                            d="M32 45
+                               L44 57
+                               L68 34"
+                            stroke="#ffffff"
+                            stroke-width="7"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+
+                        <circle cx="74" cy="24" r="5"
+                                fill="#ffffff" opacity=".9"/>
+
+                    </svg>
+
+                </div>
+
+            </div>
+
+            <div class="splash-brand">
+                <h1>MEKA<span>CHAT</span></h1>
+                <p>عالمك... أقرب إليك</p>
+            </div>
+
+            <div class="splash-loader">
+                <div class="loader-track">
+                    <div class="loader-progress"></div>
+                </div>
+
+                <span>جاري تجهيز عالمك</span>
+            </div>
+
+        </div>
+
+        <div class="splash-footer">
+            MADE FOR CONNECTION
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         التطبيق الرئيسي
+    ================================== -->
+
+    <main id="app-shell" class="app-shell">
+
+        <!-- الشريط الجانبي -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+
+                <div class="mini-logo">
+                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                        <path
+                            d="M17 29Q17 17 30 17H70Q83 17 83 30V60Q83 73 70 73H48L27 89V73Q17 73 17 60Z"
+                            fill="#14b89a"/>
+
+                        <path
+                            d="M32 45L44 57L68 34"
+                            stroke="white"
+                            stroke-width="7"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <div>
+                    <strong>MEKA</strong>
+                    <span>CHAT</span>
+                </div>
+
+            </div>
+
+            <div class="sidebar-user">
+
+                <div class="user-avatar">
+                    <span>م</span>
+                    <i></i>
+                </div>
+
+                <div class="user-info">
+                    <strong>مرحبًا بك</strong>
+                    <small>في عالم ميكا</small>
+                </div>
+
+                <button class="icon-button" id="theme-button"
+                        aria-label="تغيير المظهر">
+                    ◐
+                </button>
+
+            </div>
+
+            <div class="sidebar-section-title">
+                القائمة الرئيسية
+            </div>
+
+            <nav class="main-navigation">
+
+                <button class="nav-item active" data-page="chats">
+                    <span class="nav-icon">▤</span>
+                    <span>المحادثات</span>
+                    <span class="nav-count">0</span>
+                </button>
+
+                <button class="nav-item" data-page="status">
+                    <span class="nav-icon">◉</span>
+                    <span>الحالات</span>
+                </button>
+
+                <button class="nav-item" data-page="calls">
+                    <span class="nav-icon">♧</span>
+                    <span>المكالمات</span>
+                </button>
+
+                <button class="nav-item" data-page="contacts">
+                    <span class="nav-icon">♙</span>
+                    <span>جهات الاتصال</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <button class="nav-item" data-page="settings">
+                    <span class="nav-icon">⚙</span>
+                    <span>الإعدادات</span>
+                </button>
+
+                <div class="sidebar-version">
+                    MEKA CHAT · VERSION 1.0
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- منطقة المحتوى -->
+
+        <section class="main-content">
+
+            <header class="top-header">
+
+                <div>
+                    <div class="header-eyebrow">
+                        YOUR PERSONAL SPACE
+                    </div>
+
+                    <h2 id="page-title">المحادثات</h2>
+                </div>
+
+                <div class="header-actions">
+
+                    <button class="header-icon" id="search-button"
+                            aria-label="بحث">
+                        ⌕
+                    </button>
+
+                    <button class="new-chat-button" id="new-chat-button">
+                        <span>＋</span>
+                        محادثة جديدة
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <div class="content-layout">
+
+                <!-- قائمة المحادثات -->
+
+                <section class="chat-list-panel">
+
+                    <div class="chat-list-heading">
+
+                        <div>
+                            <h3>رسائلك</h3>
+                            <p>كل محادثاتك في مكان واحد</p>
+                        </div>
+
+                        <button class="small-icon-button"
+                                aria-label="خيارات المحادثات">
+                            ⋯
+                        </button>
+
+                    </div>
+
+                    <div class="chat-search">
+                        <span>⌕</span>
+                        <input
+                            type="search"
+                            placeholder="ابحث عن محادثة..."
+                            id="chat-search-input"
+                            aria-label="البحث عن محادثة">
+                    </div>
+
+                    <div class="chat-filters">
+                        <button class="filter-chip selected">الكل</button>
+                        <button class="filter-chip">غير مقروءة</button>
+                        <button class="filter-chip">المفضلة</button>
+                    </div>
+
+                    <div class="empty-chat-list">
+
+                        <div class="empty-chat-icon">
+                            <span>✉</span>
+                        </div>
+
+                        <h3>مساحة جديدة للتواصل</h3>
+
+                        <p>
+                            ستظهر محادثاتك هنا عندما تبدأ التواصل مع أصدقائك.
+                        </p>
+
+                        <button id="start-chat-button">
+                            ابدأ محادثة
+                            <span>←</span>
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- مساحة المحادثة -->
+
+                <section class="conversation-panel">
+
+                    <div class="conversation-decoration decoration-one"></div>
+                    <div class="conversation-decoration decoration-two"></div>
+
+                    <div class="welcome-area">
+
+                        <div class="welcome-logo">
+                            <svg viewBox="0 0 100 100" aria-hidden="true">
+
+                                <path
+                                    d="M17 29Q17 17 30 17H70Q83 17 83 30V60Q83 73 70 73H48L27 89V73Q17 73 17 60Z"
+                                    fill="url(#welcomeGradient)"/>
+
+                                <defs>
+                                    <linearGradient id="welcomeGradient"
+                                        x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#42e8c4"/>
+                                        <stop offset="100%" stop-color="#079b83"/>
+                                    </linearGradient>
+                                </defs>
+
+                                <path
+                                    d="M32 45L44 57L68 34"
+                                    stroke="white"
+                                    stroke-width="7"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+
+                            </svg>
+                        </div>
+
+                        <span class="welcome-label">
+                            WELCOME TO MEKA
+                        </span>
+
+                        <h1>
+                            التواصل أصبح
+                            <span>أقرب</span>
+                        </h1>
+
+                        <p>
+                            ابدأ رحلتك مع MEKA CHAT.
+                            عالم يجمع رسائلك وأصدقاءك ولحظاتك في مكان واحد.
+                        </p>
+
+                        <div class="welcome-features">
+
+                            <div class="feature-pill">
+                                <span>✦</span>
+                                تواصل بسهولة
+                            </div>
+
+                            <div class="feature-pill">
+                                <span>◉</span>
+                                ابقَ قريبًا
+                            </div>
+
+                            <div class="feature-pill">
+                                <span>⌁</span>
+                                عالمك الخاص
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="conversation-footer">
+                        MEKA CHAT · CONNECT YOUR WORLD
+                    </div>
+
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- JavaScript الخاص بالتطبيق -->
+    <script src="app.js" defer></script>
+
+</body>
+</html>
