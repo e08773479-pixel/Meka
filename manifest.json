@@ -2,19 +2,32 @@
   "id": "./",
   "name": "MEKA — ميكا",
   "short_name": "MEKA",
-  "description": "MEKA — منصة التواصل والمراسلة الحديثة",
+  "description": "MEKA منصة التواصل والمراسلة الحديثة",
+
   "lang": "ar",
   "dir": "rtl",
-  "start_url": "./",
+
+  "start_url": "./index.html",
   "scope": "./",
+
   "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+
   "orientation": "portrait",
+
   "background_color": "#071c18",
   "theme_color": "#071c18",
+
   "categories": [
     "social",
     "communication"
   ],
+
+  "prefer_related_applications": false,
+
   "icons": [
     {
       "src": "./assets/icon-192.png",
