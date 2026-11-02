@@ -1,39 +1,276 @@
+/* =========================================
+   MEKA — APPLICATION CONFIGURATION
+========================================= */
+
+"use strict";
+
+
+/* =========================================
+   APP INFORMATION
+========================================= */
+
 export const MEKA_CONFIG = Object.freeze({
 
-  APP_NAME: "MEKA",
-  APP_NAME_AR: "ميكا",
+  app: {
+    name: "MEKA",
+    arabicName: "ميكا",
+    version: "1.0.0",
+    description: "منصة ميكا للتواصل والمراسلة",
+    language: "ar",
+    direction: "rtl"
+  },
 
-  VERSION: "1.0.0",
 
-  SUPABASE_URL:
-    "https://rtlxnzyzlkezukyfgjbs.supabase.co",
+  /* =======================================
+     SUPABASE CONNECTION
+  ======================================= */
 
-  SUPABASE_PUBLISHABLE_KEY:
-    "sb_publishable_qQJb_EzE3NgW74IxkwRDmw_0y4XIymI",
+  supabase: {
 
-  DEFAULT_LANGUAGE: "ar",
+    url: "https://rtlxnzyzlkezukyfgjbs.supabase.co",
 
-  DEFAULT_THEME: "dark",
+    publishableKey:
+      "sb_publishable_qQJb_EzE3NgW74IxkwRDmw_0y4XIymI"
 
-  SPLASH_DURATION: 5000,
+  },
 
-  MAX_MESSAGE_LENGTH: 5000,
 
-  MAX_UPLOAD_SIZE: 25 * 1024 * 1024,
+  /* =======================================
+     AUTHENTICATION
+  ======================================= */
 
-  STORAGE_BUCKETS: Object.freeze({
-    CHAT_MEDIA: "meka-chat-media",
-    DOCUMENTS: "meka-documents"
-  }),
+  authentication: {
 
-  REALTIME: Object.freeze({
-    ENABLED: true,
-    MESSAGE_TABLE: "messages",
-    CONVERSATION_TABLE: "conversations"
-  })
+    googleEnabled: true,
+
+    emailEnabled: true,
+
+    rememberSession: true,
+
+    autoRefreshToken: true,
+
+    detectSessionInUrl: true
+
+  },
+
+
+  /* =======================================
+     USER SETTINGS
+  ======================================= */
+
+  user: {
+
+    usernameMinLength: 3,
+
+    usernameMaxLength: 24,
+
+    displayNameMaxLength: 60,
+
+    bioMaxLength: 300,
+
+    avatarMaxSizeMB: 5
+
+  },
+
+
+  /* =======================================
+     CHAT SETTINGS
+  ======================================= */
+
+  chat: {
+
+    messageMaxLength: 10000,
+
+    pageSize: 30,
+
+    realtimeEnabled: true,
+
+    typingIndicatorEnabled: true,
+
+    readReceiptsEnabled: true,
+
+    mediaEnabled: true
+
+  },
+
+
+  /* =======================================
+     SOCIAL SETTINGS
+  ======================================= */
+
+  social: {
+
+    storiesEnabled: true,
+
+    postsEnabled: true,
+
+    reactionsEnabled: true,
+
+    commentsEnabled: true,
+
+    groupsEnabled: true
+
+  },
+
+
+  /* =======================================
+     CALL SETTINGS
+  ======================================= */
+
+  calls: {
+
+    audioEnabled: true,
+
+    videoEnabled: true,
+
+    signalingEnabled: true,
+
+    /*
+      WebRTC requires STUN/TURN configuration.
+      TURN credentials must never be stored here.
+    */
+
+    iceServers: [
+      {
+        urls: "stun:stun.l.google.com:19302"
+      }
+    ]
+
+  },
+
+
+  /* =======================================
+     PWA SETTINGS
+  ======================================= */
+
+  pwa: {
+
+    enabled: true,
+
+    serviceWorkerPath: "./sw.js",
+
+    manifestPath: "./manifest.json",
+
+    splashDuration: 5000
+
+  },
+
+
+  /* =======================================
+     STORAGE BUCKETS
+  ======================================= */
+
+  storage: {
+
+    avatars: "avatars",
+
+    chatMedia: "chat-media",
+
+    stories: "stories",
+
+    postMedia: "post-media",
+
+    voiceMessages: "voice-messages"
+
+  },
+
+
+  /* =======================================
+     SECURITY
+  ======================================= */
+
+  security: {
+
+    neverStorePasswordsLocally: true,
+
+    neverExposeServiceRoleKey: true,
+
+    useRowLevelSecurity: true,
+
+    validateUploadedFiles: true,
+
+    sanitizeUserContent: true
+
+  },
+
+
+  /* =======================================
+     INTERFACE
+  ======================================= */
+
+  interface: {
+
+    defaultTheme: "dark",
+
+    primaryColor: "#16c784",
+
+    backgroundColor: "#071c18",
+
+    defaultLanguage: "ar"
+
+  }
 
 });
 
-export function getAppBaseUrl() {
-  return window.location.origin + window.location.pathname;
+
+/* =========================================
+   VALIDATE CONFIGURATION
+========================================= */
+
+export function validateMekaConfig() {
+
+  const errors = [];
+
+  const supabase = MEKA_CONFIG.supabase;
+
+  if (!supabase.url.startsWith("https://")) {
+
+    errors.push("Supabase URL must use HTTPS.");
+
+  }
+
+  if (!supabase.publishableKey.startsWith("sb_publishable_")) {
+
+    errors.push("Invalid Supabase publishable key.");
+
+  }
+
+  if (errors.length > 0) {
+
+    throw new Error(
+      "MEKA configuration error: " + errors.join(" ")
+    );
+
+  }
+
+  return true;
+
 }
+
+
+/* =========================================
+   ENVIRONMENT INFORMATION
+========================================= */
+
+export const MEKA_ENV = Object.freeze({
+
+  production:
+    typeof location !== "undefined" &&
+    location.hostname !== "localhost" &&
+    location.hostname !== "127.0.0.1",
+
+  secure:
+    typeof location !== "undefined" &&
+    location.protocol === "https:",
+
+  supportedBrowser:
+    typeof window !== "undefined"
+
+});
+
+
+/* =========================================
+   EXPORT DEFAULT
+========================================= */
+
+export default MEKA_CONFIG;
