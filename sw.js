@@ -1,4 +1,11 @@
-const CACHE_NAME = "meka-shell-v1";
+/* =========================================
+   MEKA SERVICE WORKER
+   Progressive Web App
+========================================= */
+
+"use strict";
+
+const CACHE_NAME = "meka-app-v1";
 
 const APP_SHELL = [
   "./",
@@ -13,162 +20,348 @@ const APP_SHELL = [
   "./social.js",
   "./calls.js",
   "./notifications.js",
-  "./app.js"
+  "./app.js",
+  "./assets/icon-192.png",
+  "./assets/icon-512.png",
+  "./assets/icon-maskable.png"
 ];
 
 
-/* تثبيت Service Worker */
+/* =========================================
+   INSTALL
+========================================= */
+
 self.addEventListener("install", event => {
 
   event.waitUntil(
 
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_SHELL))
-      .then(() => self.skipWaiting())
+    (async () => {
+
+      const cache = await caches.open(CACHE_NAME);
+
+      /*
+        نحاول تخزين الملفات الموجودة فقط.
+        غياب ملف لم نصل إلى إنشائه بعد
+        لن يمنع تثبيت Service Worker.
+      */
+
+      await Promise.allSettled(
+
+        APP_SHELL.map(async path => {
+
+          try {
+
+            const response = await fetch(path, {
+              cache: "no-cache"
+            });
+
+            if (
+              response.ok &&
+              response.type === "basic"
+            ) {
+
+              await cache.put(path, response);
+
+            }
+
+          } catch (error) {
+
+            console.warn(
+              "MEKA: لم يتم تخزين الملف:",
+              path
+            );
+
+          }
+
+        })
+
+      );
+
+      await self.skipWaiting();
+
+    })()
 
   );
 
 });
 
 
-/* تفعيل النسخة الجديدة */
+/* =========================================
+   ACTIVATE
+========================================= */
+
 self.addEventListener("activate", event => {
 
   event.waitUntil(
 
-    caches.keys().then(keys => {
+    (async () => {
 
-      return Promise.all(
+      const cacheNames = await caches.keys();
 
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
+      await Promise.all(
+
+        cacheNames.map(async cacheName => {
+
+          if (
+            cacheName.startsWith("meka-app-") &&
+            cacheName !== CACHE_NAME
+          ) {
+
+            await caches.delete(cacheName);
+
+          }
+
+        })
 
       );
 
-    }).then(() => self.clients.claim())
+      await self.clients.claim();
+
+    })()
 
   );
 
 });
 
 
-/* التعامل مع الطلبات */
+/* =========================================
+   NETWORK SECURITY
+========================================= */
+
+function shouldBypassCache(request, url) {
+
+  if (request.method !== "GET") {
+    return true;
+  }
+
+  if (url.origin !== self.location.origin) {
+    return true;
+  }
+
+  const path = url.pathname.toLowerCase();
+
+  /*
+    لا نخزن طلبات تسجيل الدخول أو البيانات
+    أو الرسائل أو ملفات المستخدمين الخاصة.
+  */
+
+  if (
+    path.includes("/auth/") ||
+    path.includes("/rest/") ||
+    path.includes("/storage/") ||
+    path.includes("/realtime/") ||
+    path.includes("/functions/")
+  ) {
+
+    return true;
+
+  }
+
+  return false;
+
+}
+
+
+/* =========================================
+   NETWORK FIRST
+   HTML PAGES
+========================================= */
+
+async function handleNavigation(request) {
+
+  const cache = await caches.open(CACHE_NAME);
+
+  try {
+
+    const response = await fetch(request);
+
+    if (
+      response &&
+      response.ok &&
+      response.type === "basic"
+    ) {
+
+      await cache.put(
+        "./index.html",
+        response.clone()
+      );
+
+    }
+
+    return response;
+
+  } catch (error) {
+
+    const cachedPage = await cache.match("./index.html");
+
+    if (cachedPage) {
+      return cachedPage;
+    }
+
+    return new Response(
+
+      `<!DOCTYPE html>
+      <html lang="ar" dir="rtl">
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>MEKA</title>
+      <body style="background:#071c18;color:white;font-family:Arial;text-align:center;padding:50px">
+      <h2>MEKA</h2>
+      <p>لا يوجد اتصال بالإنترنت حاليًا.</p>
+      <p>تحقق من اتصالك وحاول مرة أخرى.</p>
+      </body>
+      </html>`,
+
+      {
+        headers: {
+          "Content-Type": "text/html; charset=utf-8"
+        }
+      }
+
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   STATIC FILES
+========================================= */
+
+async function handleStaticFile(request) {
+
+  const cache = await caches.open(CACHE_NAME);
+
+  try {
+
+    const response = await fetch(request);
+
+    if (
+      response &&
+      response.ok &&
+      response.type === "basic"
+    ) {
+
+      await cache.put(
+        request,
+        response.clone()
+      );
+
+    }
+
+    return response;
+
+  } catch (error) {
+
+    const cachedResponse = await cache.match(request);
+
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
+    return new Response(
+      "الملف غير متاح حاليًا. تحقق من اتصال الإنترنت.",
+      {
+        status: 503,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8"
+        }
+      }
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   FETCH
+========================================= */
+
 self.addEventListener("fetch", event => {
 
   const request = event.request;
 
-  if (request.method !== "GET") {
+  let url;
+
+  try {
+
+    url = new URL(request.url);
+
+  } catch (error) {
+
     return;
+
   }
 
-  const url = new URL(request.url);
-
-  /*
-    لا نخزن طلبات Supabase أو بيانات المستخدمين.
-    الاتصال وقاعدة البيانات يظلان عبر الشبكة.
-  */
-
-  if (
-    url.hostname.includes("supabase.co") ||
-    url.pathname.includes("/rest/") ||
-    url.pathname.includes("/auth/") ||
-    url.pathname.includes("/storage/")
-  ) {
+  if (shouldBypassCache(request, url)) {
     return;
   }
-
-
-  /*
-    لا نتدخل في روابط خارجية.
-  */
-
-  if (url.origin !== self.location.origin) {
-    return;
-  }
-
-
-  /*
-    صفحات التطبيق:
-    نحاول الشبكة أولًا، ثم نستخدم النسخة المخزنة.
-  */
 
   if (request.mode === "navigate") {
 
     event.respondWith(
-
-      fetch(request)
-        .then(response => {
-
-          if (response && response.ok) {
-
-            const copy = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => cache.put("./index.html", copy));
-
-          }
-
-          return response;
-
-        })
-        .catch(() => {
-
-          return caches.match("./index.html");
-
-        })
-
+      handleNavigation(request)
     );
 
     return;
 
   }
 
-
-  /*
-    الملفات الثابتة:
-    الكاش أولًا ثم الشبكة.
-  */
-
   event.respondWith(
-
-    caches.match(request).then(cachedResponse => {
-
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-
-      return fetch(request).then(response => {
-
-        if (
-          response &&
-          response.ok &&
-          response.type === "basic"
-        ) {
-
-          const copy = response.clone();
-
-          caches.open(CACHE_NAME)
-            .then(cache => cache.put(request, copy));
-
-        }
-
-        return response;
-
-      });
-
-    })
-
+    handleStaticFile(request)
   );
 
 });
 
 
-/* استقبال أمر تحديث التطبيق */
+/* =========================================
+   UPDATE COMMUNICATION
+========================================= */
+
 self.addEventListener("message", event => {
 
-  if (event.data && event.data.type === "SKIP_WAITING") {
+  if (!event.data) return;
+
+  if (event.data.type === "MEKA_SKIP_WAITING") {
+
     self.skipWaiting();
+
   }
+
+});
+
+
+/* =========================================
+   NOTIFICATION CLICK
+========================================= */
+
+self.addEventListener("notificationclick", event => {
+
+  event.notification.close();
+
+  event.waitUntil(
+
+    self.clients.matchAll({
+      type: "window",
+      includeUncontrolled: true
+    }).then(clients => {
+
+      for (const client of clients) {
+
+        if ("focus" in client) {
+
+          return client.focus();
+
+        }
+
+      }
+
+      return self.clients.openWindow("./");
+
+    })
+
+  );
 
 });
