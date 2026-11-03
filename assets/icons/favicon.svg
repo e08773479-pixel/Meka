@@ -1,0 +1,12 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="novaGradient" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A18EFF"/>
+      <stop offset="1" stop-color="#7056E8"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="19" fill="#111620"/>
+  <path d="M17 47V17h7.5l15 19.2V17H47v30h-7.4L24.5 27.6V47H17Z" fill="url(#novaGradient)"/>
+  <circle cx="48" cy="16" r="4" fill="#38CDBB"/>
+</svg>
