@@ -1,0 +1,84 @@
+:root {
+  color-scheme: dark;
+
+  /* Brand */
+  --brand-primary: #8B72F8;
+  --brand-primary-hover: #A18EFF;
+  --brand-primary-soft: rgba(139, 114, 248, 0.14);
+  --brand-secondary: #38CDBB;
+  --brand-gradient: linear-gradient(135deg, #9B83FF 0%, #7056E8 100%);
+
+  /* Backgrounds */
+  --bg-app: #0D1018;
+  --bg-sidebar: #111620;
+  --bg-main: #0E131D;
+  --bg-surface: #171E2B;
+  --bg-surface-hover: #202A3A;
+  --bg-elevated: #202939;
+  --bg-input: #171F2D;
+
+  /* Text */
+  --text-primary: #F4F5FA;
+  --text-secondary: #A4ADBD;
+  --text-muted: #707B8D;
+  --text-inverse: #111620;
+
+  /* Borders */
+  --border-subtle: rgba(218, 225, 240, 0.07);
+  --border-default: rgba(218, 225, 240, 0.12);
+  --border-focus: rgba(139, 114, 248, 0.65);
+
+  /* Messages */
+  --message-outgoing: #6754C8;
+  --message-outgoing-text: #FFFFFF;
+  --message-incoming: #202A39;
+  --message-incoming-text: #F4F5FA;
+
+  /* Status */
+  --status-online: #43D6A2;
+  --status-away: #F2B85B;
+  --status-danger: #F16D83;
+  --status-info: #66A9F8;
+
+  /* Shadows */
+  --shadow-small: 0 3px 12px rgba(0, 0, 0, 0.16);
+  --shadow-medium: 0 12px 35px rgba(0, 0, 0, 0.22);
+  --shadow-large: 0 24px 70px rgba(0, 0, 0, 0.32);
+
+  /* Typography */
+  --font-main: "Cairo", "Segoe UI", sans-serif;
+  --font-size-xs: 0.72rem;
+  --font-size-sm: 0.84rem;
+  --font-size-md: 0.94rem;
+  --font-size-lg: 1.08rem;
+  --font-size-xl: 1.35rem;
+  --font-size-2xl: 1.8rem;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* Shape */
+  --radius-xs: 7px;
+  --radius-sm: 11px;
+  --radius-md: 15px;
+  --radius-lg: 21px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* Layout */
+  --sidebar-width: 370px;
+  --header-height: 76px;
+  --composer-height: 82px;
+
+  /* Motion */
+  --motion-fast: 140ms ease;
+  --motion-normal: 220ms ease;
+  --motion-slow: 360ms ease;
+}
