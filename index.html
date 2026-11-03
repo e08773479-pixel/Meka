@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -161,23 +160,24 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 @media(max-width:680px){
  body{overflow:hidden}
  #app{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 66px}
- .rail{display:none}
- .side{display:none}
- .main{grid-row:1}
- .main-top{height:60px;padding:0 15px}
- .main-content{padding:17px}
+ .rail{display:none}.side{display:none}.main{grid-row:1}
+ .main-top{height:60px;padding:0 15px}.main-content{padding:17px}
  .mobile-bottom{display:flex;grid-row:2;background:#11111c;border-top:1px solid var(--line);justify-content:space-around;align-items:center;padding:5px 4px}
  .mobile-bottom button{display:flex;flex-direction:column;align-items:center;gap:2px;background:transparent;border:0;color:var(--muted);font-size:9px;min-width:54px}
  .mobile-bottom button.active{color:var(--purple2)}
  .mobile-bottom .icon{width:21px;height:21px}
- .mobile-menu{display:inline-grid}
- .settings-layout{grid-template-columns:1fr}
+ .mobile-menu{display:inline-grid}.settings-layout{grid-template-columns:1fr}
  .settings-nav{display:flex;overflow:auto;gap:5px}
  .settings-nav button{width:auto;white-space:nowrap}
  .profile-cover{align-items:flex-start}
  .main-top .top-right{display:flex;gap:2px}
 }
 </style>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -186,9 +186,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
   <div class="orbit"></div>
   <span class="float-dot" style="width:7px;height:7px;top:-65px;right:-80px"></span>
   <span class="float-dot" style="width:10px;height:10px;bottom:-70px;left:-65px;animation-delay:1s;background:var(--teal)"></span>
-  <div class="logo-mark">
-   <svg viewBox="0 0 48 48"><path d="M8 35 24 7l16 28H8Z"/><path d="m17 27 7-12 7 12M13 35h22"/></svg>
-  </div>
+  <div class="logo-mark"><svg viewBox="0 0 48 48"><path d="M8 35 24 7l16 28H8Z"/><path d="m17 27 7-12 7 12M13 35h22"/></svg></div>
   <div class="splash-title">NOVA</div>
   <div class="splash-sub">تواصل بلا حدود</div>
   <div class="loader-ring"></div>
@@ -225,16 +223,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 <div id="app">
  <nav class="rail">
   <div class="rail-logo"><svg viewBox="0 0 48 48"><path d="M8 35 24 7l16 28H8Z"/><path d="m17 27 7-12 7 12M13 35h22"/></svg></div>
-  <button class="rail-btn active" data-page="home" title="الرئيسية"><svg class="icon"><use href="#i-home"/></svg></button>
-  <button class="rail-btn" data-page="chats" title="المحادثات"><svg class="icon"><use href="#i-chat"/></svg></button>
-  <button class="rail-btn" data-page="contacts" title="جهات الاتصال"><svg class="icon"><use href="#i-users"/></svg></button>
-  <button class="rail-btn" data-page="statuses" title="الحالات"><svg class="icon"><use href="#i-circle"/></svg></button>
-  <button class="rail-btn" data-page="communities" title="المجتمعات"><svg class="icon"><use href="#i-community"/></svg></button>
-  <button class="rail-btn" data-page="channels" title="القنوات"><svg class="icon"><use href="#i-broadcast"/></svg></button>
-  <button class="rail-btn" data-page="calls" title="المكالمات"><svg class="icon"><use href="#i-phone"/></svg></button>
+  <button class="rail-btn active" data-page="home"><svg class="icon"><use href="#i-home"/></svg></button>
+  <button class="rail-btn" data-page="chats"><svg class="icon"><use href="#i-chat"/></svg></button>
+  <button class="rail-btn" data-page="contacts"><svg class="icon"><use href="#i-users"/></svg></button>
+  <button class="rail-btn" data-page="statuses"><svg class="icon"><use href="#i-circle"/></svg></button>
+  <button class="rail-btn" data-page="communities"><svg class="icon"><use href="#i-community"/></svg></button>
+  <button class="rail-btn" data-page="channels"><svg class="icon"><use href="#i-broadcast"/></svg></button>
+  <button class="rail-btn" data-page="calls"><svg class="icon"><use href="#i-phone"/></svg></button>
   <div class="rail-spacer"></div>
-  <button class="rail-btn" data-page="profile" title="الملف الشخصي"><svg class="icon"><use href="#i-user"/></svg></button>
-  <button class="rail-btn" data-page="settings" title="الإعدادات"><svg class="icon"><use href="#i-settings"/></svg></button>
+  <button class="rail-btn" data-page="profile"><svg class="icon"><use href="#i-user"/></svg></button>
+  <button class="rail-btn" data-page="settings"><svg class="icon"><use href="#i-settings"/></svg></button>
  </nav>
 
  <aside class="side">
@@ -242,25 +240,17 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
    <div class="brand-row">
     <div class="brand-name">NO<span>VA</span></div>
     <div class="side-actions">
-     <button class="icon-btn" data-action="new-chat" title="محادثة جديدة"><svg class="icon"><use href="#i-edit"/></svg></button>
-     <button class="icon-btn" data-action="side-menu" title="المزيد"><svg class="icon"><use href="#i-more"/></svg></button>
+     <button class="icon-btn" data-action="new-chat"><svg class="icon"><use href="#i-edit"/></svg></button>
+     <button class="icon-btn" data-action="side-menu"><svg class="icon"><use href="#i-more"/></svg></button>
     </div>
    </div>
    <div class="search-box"><svg class="icon"><use href="#i-search"/></svg><input id="globalSearch" placeholder="ابحث عن محادثة أو شخص أو NOVA ID"></div>
   </div>
   <div class="side-tabs">
-   <button class="active" data-filter="all">الكل</button>
-   <button data-filter="unread">غير مقروءة</button>
-   <button data-filter="groups">المجموعات</button>
-   <button data-filter="favorites">المفضلة</button>
+   <button class="active" data-filter="all">الكل</button><button data-filter="unread">غير مقروءة</button><button data-filter="groups">المجموعات</button><button data-filter="favorites">المفضلة</button>
   </div>
   <div class="list-area" id="conversationList">
-   <div class="empty-state">
-    <div class="empty-icon"><svg class="icon"><use href="#i-chat"/></svg></div>
-    <h3>مساحتك للمحادثات</h3>
-    <p>ابدأ محادثة جديدة بالبحث عن شخص باستخدام NOVA ID أو اسم المستخدم.</p>
-    <button class="btn" style="margin-top:16px" data-action="new-chat">محادثة جديدة</button>
-   </div>
+   <div class="empty-state"><div class="empty-icon"><svg class="icon"><use href="#i-chat"/></svg></div><h3>مساحتك للمحادثات</h3><p>ابدأ محادثة جديدة بالبحث عن شخص باستخدام NOVA ID أو اسم المستخدم.</p><button class="btn" style="margin-top:16px" data-action="new-chat">محادثة جديدة</button></div>
   </div>
   <div class="profile-mini">
    <div class="avatar sm" id="miniAvatar">N</div>
@@ -276,8 +266,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
     <h2 id="pageHeading">الرئيسية</h2>
    </div>
    <div class="top-right">
-    <button class="icon-btn" data-action="new-chat" title="محادثة جديدة"><svg class="icon"><use href="#i-edit"/></svg></button>
-    <button class="icon-btn" data-page="profile" title="الملف الشخصي"><svg class="icon"><use href="#i-user"/></svg></button>
+    <button class="icon-btn" data-action="new-chat"><svg class="icon"><use href="#i-edit"/></svg></button>
+    <button class="icon-btn" data-page="profile"><svg class="icon"><use href="#i-user"/></svg></button>
    </div>
   </header>
   <section class="main-content" id="pageContent">
@@ -285,14 +275,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
     <div class="welcome-logo"><svg viewBox="0 0 48 48"><path d="M8 35 24 7l16 28H8Z"/><path d="m17 27 7-12 7 12M13 35h22"/></svg></div>
     <h1>أهلاً بك في NOVA</h1>
     <p>مساحتك الخاصة للتواصل والمشاركة. ابدأ بالبحث عن أصدقائك باستخدام NOVA ID، أو استكشف أدوات التواصل المختلفة.</p>
-    <div class="quick-actions">
-     <button class="btn" data-action="new-chat">ابدأ محادثة</button>
-     <button class="btn secondary" data-page="profile">ملفي الشخصي</button>
-    </div>
+    <div class="quick-actions"><button class="btn" data-action="new-chat">ابدأ محادثة</button><button class="btn secondary" data-page="profile">ملفي الشخصي</button></div>
    </div>
   </section>
  </main>
-
  <nav class="mobile-bottom">
   <button class="active" data-page="home"><svg class="icon"><use href="#i-home"/></svg><span>الرئيسية</span></button>
   <button data-page="chats"><svg class="icon"><use href="#i-chat"/></svg><span>الدردشات</span></button>
@@ -302,7 +288,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
  </nav>
 </div>
 
-<!-- SVG icon library -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
  <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></symbol>
  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></symbol>
@@ -319,12 +304,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14 4h-4L8 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-4z"/><circle cx="12" cy="13" r="3"/></symbol>
- <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></symbol>
  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13z"/></symbol>
  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></symbol>
- <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></symbol>
  <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4zM22 2 11 13"/></symbol>
  <symbol id="i-close" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></symbol>
  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/></symbol>
@@ -333,8 +316,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 <div class="modal-backdrop" id="modalBackdrop">
  <div class="modal" id="modalBox" role="dialog" aria-modal="true">
   <div class="modal-head"><h3 id="modalTitle">نافذة</h3><button class="icon-btn" data-action="close-modal"><svg class="icon"><use href="#i-close"/></svg></button></div>
-  <div id="modalBody"></div>
-  <div class="modal-actions" id="modalActions"></div>
+  <div id="modalBody"></div><div class="modal-actions" id="modalActions"></div>
  </div>
 </div>
 <div class="toast" id="toast" role="status"></div>
@@ -342,30 +324,209 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 <script>
 "use strict";
 
-/* NOVA UI — بيانات الحساب والرسائل الحقيقية تُحمّل من خدمة الحساب بعد إعداد الربط. */
-const state={
- page:"home",authMode:"login",user:null,profileImage:"",theme:"dark",
- conversations:[],messages:[],contacts:[],settings:{notifications:true,readReceipts:true,lastSeen:true,dark:true},
- activeFilter:"all",settingsTab:"account"
+/* Firebase configuration — NOVA */
+const firebaseConfig = {
+ apiKey: "AIzaSyC59jA665H0FiZLSG7fo5ozTVbRhlocqg",
+ authDomain: "meka-1ed57.firebaseapp.com",
+ databaseURL: "https://meka-1ed57-default-rtdb.firebaseio.com",
+ projectId: "meka-1ed57",
+ storageBucket: "meka-1ed57.firebasestorage.app",
+ messagingSenderId: "859357417252",
+ appId: "1:859357417252:web:dfc927ac89661aaf2dedb1",
+ measurementId: "G-FDV5LBJ59M"
 };
+
+const state={
+ page:"home",authMode:"login",user:null,profileImage:"",
+ conversations:[],messages:[],contacts:[],
+ settings:{notifications:true,readReceipts:true,lastSeen:true,dark:true},
+ activeFilter:"all",settingsTab:"account",authReady:false
+};
+
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const icon=id=>`<svg class="icon"><use href="#i-${id}"/></svg>`;
-const toast=(message)=>{
+const toast=message=>{
  const el=$("#toast");el.textContent=message;el.classList.add("show");
- clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove("show"),2600);
+ clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove("show"),2800);
 };
 const escapeHTML=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const showModal=(title,body,actions=[])=>{
- $("#modalTitle").textContent=title;$("#modalBody").innerHTML=body;
+ $("#modalTitle").textContent=title;
+ $("#modalBody").innerHTML=body;
  $("#modalActions").innerHTML=actions.map((a,i)=>`<button class="btn ${a.secondary?"secondary":""}" data-modal-action="${i}">${escapeHTML(a.label)}</button>`).join("");
  $("#modalBackdrop").classList.add("show");
  $("#modalActions").onclick=e=>{
   const b=e.target.closest("[data-modal-action]");if(!b)return;
-  const action=actions[Number(b.dataset.modalAction)];if(action&&action.run)action.run();
+  actions[Number(b.dataset.modalAction)]?.run?.();
  };
 };
 const closeModal=()=>$("#modalBackdrop").classList.remove("show");
+
+let auth=null,db=null,firebaseReady=false;
+const splashStarted=Date.now();
+let splashFinished=false;
+let authResolved=false;
+
+function finishBoot(){
+ if(!splashFinished||!authResolved)return;
+ $("#splash").classList.add("hide");
+ setTimeout(()=>{
+  $("#splash").style.display="none";
+  if(state.user)enterApp(state.user);
+  else $("#auth").style.display="grid";
+ },650);
+}
+
+function firebaseError(error){
+ const codes={
+  "auth/email-already-in-use":"هذا البريد مستخدم بالفعل.",
+  "auth/invalid-email":"البريد الإلكتروني غير صحيح.",
+  "auth/weak-password":"كلمة المرور ضعيفة. استخدم 6 أحرف على الأقل.",
+  "auth/user-not-found":"لا يوجد حساب بهذا البريد.",
+  "auth/wrong-password":"كلمة المرور غير صحيحة.",
+  "auth/invalid-credential":"البريد أو كلمة المرور غير صحيحة.",
+  "auth/too-many-requests":"محاولات كثيرة. حاول مرة أخرى لاحقاً.",
+  "auth/network-request-failed":"تحقق من اتصال الإنترنت.",
+  "auth/popup-closed-by-user":"تم إغلاق نافذة تسجيل Google.",
+  "auth/unauthorized-domain":"أضف نطاق موقعك إلى Authorized domains في Firebase.",
+  "auth/operation-not-allowed":"طريقة تسجيل الدخول غير مفعّلة في Firebase.",
+  "permission-denied":"قواعد Firestore لا تسمح بالعملية. راجع قواعد قاعدة البيانات."
+ };
+ return codes[error?.code]||error?.message||"حدث خطأ غير متوقع.";
+}
+
+function randomNovaId(){
+ const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+ let result="NOVA-";
+ const bytes=new Uint8Array(8);
+ crypto.getRandomValues(bytes);
+ for(let i=0;i<8;i++)result+=chars[bytes[i]%chars.length];
+ return result;
+}
+
+/*
+ * حجز NOVA ID واسم المستخدم في معاملة واحدة.
+ * يتم فحص المستندات داخل Firestore قبل الكتابة.
+ */
+async function createNovaProfile(user,name,username){
+ const cleanUsername=username.toLowerCase();
+ const userRef=db.collection("users").doc(user.uid);
+ const usernameRef=db.collection("usernames").doc(cleanUsername);
+
+ return db.runTransaction(async transaction=>{
+  const existingUser=await transaction.get(userRef);
+  if(existingUser.exists)return existingUser.data();
+
+  const existingUsername=await transaction.get(usernameRef);
+  if(existingUsername.exists)throw new Error("اسم المستخدم مستخدم بالفعل. اختر اسماً آخر.");
+
+  let novaId="",idRef=null,found=false;
+  for(let attempt=0;attempt<12;attempt++){
+   const candidate=randomNovaId();
+   const candidateRef=db.collection("novaIds").doc(candidate);
+   const candidateDoc=await transaction.get(candidateRef);
+   if(!candidateDoc.exists){
+    novaId=candidate;idRef=candidateRef;found=true;break;
+   }
+  }
+  if(!found)throw new Error("تعذر إنشاء NOVA ID الآن. حاول مرة أخرى.");
+
+  const profile={
+   uid:user.uid,
+   displayName:name,
+   username:cleanUsername,
+   usernameLower:cleanUsername,
+   novaId,
+   email:user.email||"",
+   photoURL:user.photoURL||"",
+   bio:"",
+   createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+   updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  transaction.set(userRef,profile);
+  transaction.set(usernameRef,{uid:user.uid,username:cleanUsername});
+  transaction.set(idRef,{uid:user.uid,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+  return profile;
+ });
+}
+
+async function ensureGoogleProfile(user){
+ const userRef=db.collection("users").doc(user.uid);
+ const snap=await userRef.get();
+ if(snap.exists)return snap.data();
+
+ const base=(user.displayName||"nova_user")
+  .toLowerCase().replace(/[^a-z0-9_.]/g,"").slice(0,18)||"nova_user";
+ let username=base;
+ for(let i=0;i<8;i++){
+  const check=await db.collection("usernames").doc(username).get();
+  if(!check.exists)break;
+  username=base+"_"+Math.random().toString(36).slice(2,5);
+ }
+ return createNovaProfile(user,user.displayName||"مستخدم NOVA",username);
+}
+
+async function loadUserProfile(user){
+ const ref=db.collection("users").doc(user.uid);
+ const snap=await ref.get();
+ if(snap.exists){
+  const data=snap.data();
+  return {...data,email:user.email||data.email||"",photoURL:user.photoURL||data.photoURL||""};
+ }
+ return ensureGoogleProfile(user);
+}
+
+function initializeFirebase(){
+ try{
+  if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+  auth=firebase.auth();
+  db=firebase.firestore();
+  firebaseReady=true;
+
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
+
+  auth.onAuthStateChanged(async user=>{
+   try{
+    if(user){
+     const profile=await loadUserProfile(user);
+     state.user={...profile,uid:user.uid,email:user.email||profile.email};
+     enterApp(state.user);
+    }else{
+     state.user=null;
+     $("#app").style.display="none";
+     $("#auth").style.display="grid";
+    }
+   }catch(error){
+    console.error(error);
+    state.user=user?{uid:user.uid,email:user.email,displayName:user.displayName||"حساب NOVA"}:null;
+    if(user)enterApp(state.user);
+    else $("#auth").style.display="grid";
+    toast("تعذر تحميل بيانات الملف الشخصي: "+firebaseError(error));
+   }finally{
+    authResolved=true;state.authReady=true;finishBoot();
+   }
+  });
+ }catch(error){
+  console.error("Firebase initialization:",error);
+  firebaseReady=false;authResolved=true;
+  $("#authMessage").textContent="تعذر الاتصال بخدمة الحساب. تحقق من إعدادات Firebase.";
+  finishBoot();
+ }
+}
+
+function setAuthMessage(message,isError=false){
+ const el=$("#authMessage");
+ el.textContent=message;
+ el.style.color=isError?"var(--danger)":"var(--teal)";
+}
+
+function setAuthLoading(loading){
+ $("#authSubmit").disabled=loading;
+ $("#googleSignIn").disabled=loading;
+ $("#authSubmit").textContent=loading?"جارٍ التنفيذ...":(state.authMode==="signup"?"إنشاء الحساب":"تسجيل الدخول");
+}
 
 function setAuthMode(mode){
  state.authMode=mode;
@@ -374,35 +535,83 @@ function setAuthMode(mode){
  $("#authTitle").textContent=mode==="signup"?"أنشئ حساب NOVA":"أهلاً بك في NOVA";
  $("#authSubtitle").textContent=mode==="signup"?"ابدأ رحلتك وأنشئ هويتك الخاصة":"سجّل الدخول وتواصل مع من تحب";
  $("#authSubmit").textContent=mode==="signup"?"إنشاء الحساب":"تسجيل الدخول";
- $("#authMessage").textContent="";
+ setAuthMessage("");
 }
 $$("[data-auth-tab]").forEach(b=>b.addEventListener("click",()=>setAuthMode(b.dataset.authTab)));
 
-$("#authForm").addEventListener("submit",e=>{
+$("#authForm").addEventListener("submit",async e=>{
  e.preventDefault();
- const email=$("#email").value.trim(),password=$("#password").value;
- if(state.authMode==="signup"){
-  const name=$("#displayName").value.trim(),username=$("#username").value.trim();
-  if(!name||!username){$("#authMessage").textContent="أكمل الاسم واسم المستخدم.";return;}
-  if(!/^[a-zA-Z0-9_.]{3,24}$/.test(username)){ $("#authMessage").textContent="اسم المستخدم من 3 إلى 24 حرفاً أو رقماً، ويمكن استخدام النقطة والشرطة السفلية.";return;}
+ if(!firebaseReady){setAuthMessage("خدمة Firebase غير متاحة. تحقق من الإعدادات.",true);return;}
+ const email=$("#email").value.trim();
+ const password=$("#password").value;
+ if(!email||password.length<6){setAuthMessage("تحقق من البريد وكلمة المرور (6 أحرف على الأقل).",true);return;}
+
+ setAuthLoading(true);
+ try{
+  if(state.authMode==="signup"){
+   const name=$("#displayName").value.trim();
+   const username=$("#username").value.trim();
+   if(!name||!username)throw new Error("أكمل الاسم واسم المستخدم.");
+   if(!/^[a-zA-Z0-9_.]{3,24}$/.test(username))throw new Error("اسم المستخدم من 3 إلى 24 حرفاً أو رقماً، ويمكن استخدام النقطة والشرطة السفلية.");
+
+   const credential=await auth.createUserWithEmailAndPassword(email,password);
+   try{
+    await credential.user.updateProfile({displayName:name});
+    const profile=await createNovaProfile(credential.user,name,username);
+    state.user={...profile,uid:credential.user.uid,email};
+    enterApp(state.user);
+    toast("تم إنشاء حساب NOVA بنجاح.");
+   }catch(profileError){
+    /*
+     * لا نحذف حساب المصادقة تلقائياً إذا تعثر إنشاء الملف،
+     * حتى لا نخسر الحساب الذي تم إنشاؤه بالفعل.
+     */
+    console.error(profileError);
+    setAuthMessage("تم إنشاء حساب الدخول، لكن تعذر إنشاء ملف NOVA: "+firebaseError(profileError),true);
+   }
+  }else{
+   await auth.signInWithEmailAndPassword(email,password);
+  }
+ }catch(error){
+  setAuthMessage(firebaseError(error),true);
+ }finally{
+  setAuthLoading(false);
  }
- if(!email||password.length<6){$("#authMessage").textContent="تحقق من البريد الإلكتروني وكلمة المرور.";return;}
- toast("أكمل إعداد ربط الحساب لتسجيل الدخول بأمان.");
 });
-$("#googleSignIn").addEventListener("click",()=>toast("تسجيل Google يحتاج إعداد مزود Google في خدمة الحساب."));
+
+$("#googleSignIn").addEventListener("click",async()=>{
+ if(!firebaseReady){toast("Firebase غير متاح حالياً.");return;}
+ try{
+  setAuthLoading(true);
+  const provider=new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({prompt:"select_account"});
+  await auth.signInWithPopup(provider);
+ }catch(error){
+  setAuthMessage(firebaseError(error),true);
+ }finally{setAuthLoading(false);}
+});
+
+async function novaLogout(){
+ try{await auth.signOut();}
+ catch(error){toast(firebaseError(error));}
+}
 
 function enterApp(user){
  state.user=user||null;
- $("#auth").style.display="none";$("#app").style.display="grid";
- updateProfileMini();navigate("home");
+ $("#auth").style.display="none";
+ $("#app").style.display="grid";
+ updateProfileMini();
+ navigate("home");
 }
+
 function updateProfileMini(){
  const user=state.user;
  $("#miniName").textContent=user?.displayName||"حساب NOVA";
- $("#miniId").textContent=user?.novaId?`@${user.novaId}`:"ملفك الشخصي";
+ $("#miniId").textContent=user?.novaId||"ملفك الشخصي";
  $("#miniAvatar").textContent=(user?.displayName||"N").slice(0,1).toUpperCase();
  if(user?.photoURL)$("#miniAvatar").innerHTML=`<img src="${escapeHTML(user.photoURL)}" alt="">`;
 }
+
 function navigate(page){
  state.page=page;
  const titles={home:"الرئيسية",chats:"المحادثات",contacts:"جهات الاتصال",statuses:"الحالات",communities:"المجتمعات",channels:"القنوات",calls:"المكالمات",profile:"الملف الشخصي",settings:"الإعدادات"};
@@ -410,9 +619,11 @@ function navigate(page){
  $$("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
  renderPage();
 }
+
 function emptyBlock(symbol,title,description,buttonText,action){
  return `<div class="empty-state"><div class="empty-icon">${icon(symbol)}</div><h3>${escapeHTML(title)}</h3><p>${escapeHTML(description)}</p>${buttonText?`<button class="btn" style="margin-top:16px" data-action="${action}">${escapeHTML(buttonText)}</button>`:""}</div>`;
 }
+
 function renderPage(){
  const root=$("#pageContent");
  const pages={
@@ -429,19 +640,25 @@ function renderPage(){
  root.innerHTML=(pages[state.page]||pages.home)();
  if(state.page==="contacts")bindContactSearch();
 }
+
 function renderProfile(){
  const u=state.user||{};
  const name=escapeHTML(u.displayName||"اسمك الظاهر");
  const username=escapeHTML(u.username||"username");
  const id=escapeHTML(u.novaId||"سيظهر بعد إنشاء الحساب");
  return `<div class="section-head"><div><h2>الملف الشخصي</h2><p class="page-sub">هويتك على NOVA.</p></div><button class="btn secondary" data-action="edit-profile">تعديل الملف</button></div>
- <div class="panel"><div class="profile-cover"><div class="avatar lg" id="profileAvatar">${u.photoURL?`<img src="${escapeHTML(u.photoURL)}" alt="">`:name.slice(0,1)}</div><div class="profile-details"><h2>${name}</h2><p>@${username}</p><p>${escapeHTML(u.bio||"أضف نبذة قصيرة عنك.")}</p><div class="nova-id" style="margin-top:9px">${id}<button class="icon-btn" style="width:25px;height:25px;color:inherit" data-action="copy-id" title="نسخ الكود">${icon("copy")}</button></div></div></div></div>
+ <div class="panel"><div class="profile-cover"><div class="avatar lg" id="profileAvatar">${u.photoURL?`<img src="${escapeHTML(u.photoURL)}" alt="">`:name.slice(0,1)}</div><div class="profile-details"><h2>${name}</h2><p>@${username}</p><p>${escapeHTML(u.bio||"أضف نبذة قصيرة عنك.")}</p><div class="nova-id" style="margin-top:9px">${id}<button class="icon-btn" style="width:25px;height:25px;color:inherit" data-action="copy-id">${icon("copy")}</button></div></div></div></div>
  <div class="panel"><h3>معلومات الحساب</h3>
  <div class="row-item"><span class="muted">${icon("user")}</span><div class="row-text"><strong>اسم المستخدم</strong><small>@${username}</small></div></div>
  <div class="row-item"><span class="muted">${icon("shield")}</span><div class="row-text"><strong>NOVA ID</strong><small>${id}</small></div><button class="icon-btn" data-action="copy-id">${icon("copy")}</button></div>
  <div class="row-item"><span class="muted">${icon("lock")}</span><div class="row-text"><strong>البريد الإلكتروني</strong><small>${escapeHTML(u.email||"لم يتم تسجيل الدخول")}</small></div></div>
  </div>`;
 }
+
+function settingSwitch(key,title,desc,on){
+ return `<div class="row-item"><div class="row-text"><strong>${title}</strong><small>${desc}</small></div><button class="switch ${on?"on":""}" data-switch="${key}" aria-pressed="${on}"></button></div>`;
+}
+
 function renderSettings(){
  const tabs=[
   ["account","الحساب","user"],["privacy","الخصوصية","shield"],["notifications","الإشعارات","bell"],
@@ -458,100 +675,197 @@ function renderSettings(){
  };
  return `<div class="section-head"><div><h2>الإعدادات</h2><p class="page-sub">تحكم في تجربتك على NOVA.</p></div></div><div class="settings-layout"><div class="settings-nav">${tabs.map(t=>`<button class="${state.settingsTab===t[0]?"active":""}" data-setting-tab="${t[0]}">${icon(t[2])}${t[1]}</button>`).join("")}</div><div class="panel" id="settingsPanel">${content[state.settingsTab]||content.account}</div></div>`;
 }
-function settingSwitch(key,title,desc,on){
- return `<div class="row-item"><div class="row-text"><strong>${title}</strong><small>${desc}</small></div><button class="switch ${on?"on":""}" data-switch="${key}" aria-pressed="${on}"></button></div>`;
-}
+
 function bindContactSearch(){
  const input=$("#contactSearch"),result=$("#contactSearchResult");
- input?.addEventListener("input",()=>{const q=input.value.trim();result.textContent=q?`نتائج البحث عن: ${q}`:"اكتب بيانات الشخص الذي تبحث عنه.";});
+ input?.addEventListener("input",async()=>{
+  const q=input.value.trim();
+  if(!q){result.textContent="اكتب بيانات الشخص الذي تبحث عنه.";return;}
+  result.textContent="جارٍ البحث...";
+  try{
+   let snap;
+   if(q.toUpperCase().startsWith("NOVA-")){
+    snap=await db.collection("users").where("novaId","==",q.toUpperCase()).limit(1).get();
+   }else{
+    const username=q.replace(/^@/,"").toLowerCase();
+    snap=await db.collection("users").where("usernameLower","==",username).limit(1).get();
+   }
+   if(snap.empty){
+    result.textContent="لم يتم العثور على حساب بهذا الاسم أو NOVA ID.";
+    return;
+   }
+   const person=snap.docs[0].data();
+   if(person.uid===state.user?.uid){
+    result.textContent="هذا حسابك الشخصي.";
+    return;
+   }
+   result.innerHTML=`<div class="row-item"><div class="avatar sm">${escapeHTML((person.displayName||"N").slice(0,1))}</div><div class="row-text"><strong>${escapeHTML(person.displayName||"مستخدم NOVA")}</strong><small>@${escapeHTML(person.username||"")} · ${escapeHTML(person.novaId||"")}</small></div><button class="btn" data-action="start-chat" data-uid="${escapeHTML(person.uid)}">مراسلة</button></div>`;
+  }catch(error){
+   console.error(error);
+   result.textContent="تعذر البحث. تحقق من اتصال Firestore وقواعد القراءة.";
+  }
+ });
 }
 
 function openNewChat(){
- showModal("محادثة جديدة",`<p class="muted small">ابحث عن الشخص باستخدام NOVA ID أو اسم المستخدم.</p><div class="field-wrap"><label class="field-label">NOVA ID أو اسم المستخدم</label><input class="field" id="newChatQuery" placeholder="مثال: NOVA-123456 أو username" autocomplete="off"></div><div class="muted small">يمكنك أيضاً فتح جهات الاتصال للبحث عن حساب.</div>`,[
-  {label:"بحث",run:()=>{const q=$("#newChatQuery").value.trim();if(!q){toast("اكتب NOVA ID أو اسم المستخدم أولاً.");return;}closeModal();navigate("contacts");const input=$("#contactSearch");if(input){input.value=q;input.dispatchEvent(new Event("input"));} }},
+ showModal("محادثة جديدة",`<p class="muted small">ابحث عن الشخص باستخدام NOVA ID أو اسم المستخدم.</p><div class="field-wrap"><label class="field-label">NOVA ID أو اسم المستخدم</label><input class="field" id="newChatQuery" placeholder="مثال: NOVA-AB234567 أو username"></div>`,[
+  {label:"بحث",run:()=>{
+   const q=$("#newChatQuery").value.trim();
+   if(!q){toast("اكتب NOVA ID أو اسم المستخدم أولاً.");return;}
+   closeModal();navigate("contacts");
+   const input=$("#contactSearch");
+   if(input){input.value=q;input.dispatchEvent(new Event("input"));}
+  }},
   {label:"إلغاء",secondary:true,run:closeModal}
  ]);
 }
-function openProfileEditor(){
+
+async function openProfileEditor(){
  const u=state.user||{};
- showModal("تعديل الملف الشخصي",`<div style="display:flex;justify-content:center;margin-bottom:15px"><label class="upload-preview" id="avatarPreview">${u.photoURL?`<img src="${escapeHTML(u.photoURL)}">`:icon("camera")}<input type="file" id="avatarFile" accept="image/*" hidden></label></div>
+ showModal("تعديل الملف الشخصي",`
  <div class="field-wrap"><label class="field-label">الاسم الظاهر</label><input class="field" id="editName" maxlength="40" value="${escapeHTML(u.displayName||"")}"></div>
  <div class="field-wrap"><label class="field-label">اسم المستخدم</label><input class="field" id="editUsername" maxlength="24" value="${escapeHTML(u.username||"")}" dir="ltr"></div>
- <div class="field-wrap"><label class="field-label">نبذة عنك</label><textarea class="field" id="editBio" rows="3" maxlength="160" placeholder="اكتب نبذة قصيرة">${escapeHTML(u.bio||"")}</textarea></div>`,[
- {label:"حفظ التغييرات",run:()=>{const name=$("#editName").value.trim(),username=$("#editUsername").value.trim();if(!name||!username){toast("أكمل الاسم واسم المستخدم.");return;}if(!/^[a-zA-Z0-9_.]{3,24}$/.test(username)){toast("اسم المستخدم غير صالح.");return;}if(!state.user){toast("سجّل الدخول أولاً.");return;}state.user={...state.user,displayName:name,username,bio:$("#editBio").value.trim(),photoURL:state.profileImage||state.user.photoURL||""};updateProfileMini();closeModal();renderPage();toast("تم تحديث العرض على هذا الجهاز.");}},
+ <div class="field-wrap"><label class="field-label">نبذة عنك</label><textarea class="field" id="editBio" rows="3" maxlength="160">${escapeHTML(u.bio||"")}</textarea></div>
+ <p class="muted small">NOVA ID الخاص بك ثابت ولا يتغير عند تغيير اسم المستخدم.</p>`,[
+ {label:"حفظ التغييرات",run:async()=>{
+  const name=$("#editName").value.trim();
+  const username=$("#editUsername").value.trim().toLowerCase();
+  const bio=$("#editBio").value.trim();
+  if(!name||!username){toast("أكمل الاسم واسم المستخدم.");return;}
+  if(!/^[a-zA-Z0-9_.]{3,24}$/.test(username)){toast("اسم المستخدم غير صالح.");return;}
+  if(!state.user||!auth.currentUser){toast("سجّل الدخول أولاً.");return;}
+  try{
+   const userRef=db.collection("users").doc(state.user.uid);
+   const oldUsername=String(state.user.username||"").toLowerCase();
+   const newUsernameRef=db.collection("usernames").doc(username);
+   await db.runTransaction(async transaction=>{
+    const profileSnap=await transaction.get(userRef);
+    const nameSnap=username===oldUsername?null:await transaction.get(newUsernameRef);
+    if(nameSnap?.exists)throw new Error("اسم المستخدم مستخدم بالفعل.");
+    if(username!==oldUsername){
+     transaction.delete(db.collection("usernames").doc(oldUsername));
+     transaction.set(newUsernameRef,{uid:state.user.uid,username});
+    }
+    transaction.update(userRef,{
+     displayName:name,username,usernameLower:username,bio,
+     updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+   });
+   await auth.currentUser.updateProfile({displayName:name});
+   state.user={...state.user,displayName:name,username,bio};
+   updateProfileMini();closeModal();renderPage();toast("تم حفظ بيانات الملف الشخصي.");
+  }catch(error){toast(firebaseError(error));}
+ }},
  {label:"إلغاء",secondary:true,run:closeModal}
  ]);
- setTimeout(()=>{
-  const file=$("#avatarFile");file?.addEventListener("change",()=>{
-   const f=file.files?.[0];if(!f)return;
-   if(!f.type.startsWith("image/")){toast("اختر صورة صالحة.");return;}
-   const reader=new FileReader();reader.onload=()=>{state.profileImage=reader.result;$("#avatarPreview").innerHTML=`<img src="${reader.result}" alt="">`;};reader.readAsDataURL(f);
-  });
-  $("#avatarPreview")?.addEventListener("click",()=>file?.click());
- },0);
 }
+
 function openStatusComposer(){
  showModal("إضافة حالة",`<div class="field-wrap"><label class="field-label">نص الحالة</label><textarea class="field" id="statusText" rows="4" maxlength="500" placeholder="بماذا تفكر؟"></textarea></div><div class="field-wrap"><label class="field-label">خصوصية الحالة</label><select class="field" id="statusPrivacy"><option>جهات اتصالي</option><option>جهات اتصالي باستثناء...</option><option>المشاركة مع أشخاص محددين</option></select></div>`,[
- {label:"نشر الحالة",run:()=>{const text=$("#statusText").value.trim();if(!text){toast("اكتب نص الحالة أولاً.");return;}closeModal();toast("تم تجهيز الحالة للمراجعة قبل النشر.");}},
+ {label:"نشر الحالة",run:()=>{const text=$("#statusText").value.trim();if(!text){toast("اكتب نص الحالة أولاً.");return;}closeModal();toast("ميزة نشر الحالات تحتاج ربط قاعدة البيانات.");}},
  {label:"إلغاء",secondary:true,run:closeModal}
  ]);
 }
+
 function openCreateEntity(kind){
  const names={group:"مجموعة جديدة",community:"مجتمع جديد",channel:"قناة جديدة"};
- const title=names[kind]||"إنشاء";
- showModal(title,`<div class="field-wrap"><label class="field-label">الاسم</label><input class="field" id="entityName" maxlength="60" placeholder="اكتب الاسم"></div><div class="field-wrap"><label class="field-label">الوصف</label><textarea class="field" id="entityDescription" rows="3" maxlength="300" placeholder="أضف وصفاً (اختياري)"></textarea></div>`,[
- {label:"متابعة",run:()=>{const name=$("#entityName").value.trim();if(!name){toast("اكتب الاسم أولاً.");return;}closeModal();toast("راجع تفاصيل الإنشاء قبل المتابعة.");}},
+ showModal(names[kind]||"إنشاء",`<div class="field-wrap"><label class="field-label">الاسم</label><input class="field" id="entityName" maxlength="60" placeholder="اكتب الاسم"></div><div class="field-wrap"><label class="field-label">الوصف</label><textarea class="field" id="entityDescription" rows="3" maxlength="300"></textarea></div>`,[
+ {label:"متابعة",run:()=>{const name=$("#entityName").value.trim();if(!name){toast("اكتب الاسم أولاً.");return;}closeModal();toast("ميزة إنشاء "+names[kind]+" تحتاج ربط قاعدة البيانات.");}},
  {label:"إلغاء",secondary:true,run:closeModal}
  ]);
 }
-function handleAction(action){
+
+async function startChatWith(uid){
+ try{
+  const chatId=[state.user.uid,uid].sort().join("_");
+  const chatRef=db.collection("chats").doc(chatId);
+  await chatRef.set({
+   members:[state.user.uid,uid],
+   updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  },{merge:true});
+  toast("تم فتح المحادثة. إضافة الرسائل الفعلية ستكون في خطوة ربط الدردشة.");
+  navigate("chats");
+ }catch(error){toast(firebaseError(error));}
+}
+
+function handleAction(action,element){
  switch(action){
   case"new-chat":openNewChat();break;
   case"close-modal":closeModal();break;
   case"edit-profile":openProfileEditor();break;
-  case"copy-id":if(state.user?.novaId){navigator.clipboard?.writeText(state.user.novaId).then(()=>toast("تم نسخ NOVA ID."),()=>toast("تعذر النسخ على هذا الجهاز."));}else toast("سجّل الدخول لعرض NOVA ID الخاص بك.");break;
+  case"copy-id":
+   if(state.user?.novaId){
+    navigator.clipboard?.writeText(state.user.novaId).then(()=>toast("تم نسخ NOVA ID."),()=>toast("تعذر النسخ على هذا الجهاز."));
+   }else toast("سجّل الدخول لعرض NOVA ID الخاص بك.");
+   break;
   case"add-status":openStatusComposer();break;
   case"create-group":openCreateEntity("group");break;
   case"create-community":openCreateEntity("community");break;
   case"create-channel":openCreateEntity("channel");break;
   case"find-user":navigate("contacts");break;
-  case"new-call":toast("اختر جهة اتصال لبدء مكالمة.");navigate("contacts");break;
+  case"start-chat":startChatWith(element.dataset.uid);break;
+  case"new-call":toast("ميزة المكالمات تحتاج إضافة خدمة اتصال.");navigate("contacts");break;
   case"mobile-chats":navigate("chats");break;
-  case"side-menu":showModal("المزيد",`<div class="row-item"><div class="row-text"><strong>الملف الشخصي</strong><small>إدارة معلوماتك</small></div><button class="btn secondary" data-page="profile">فتح</button></div><div class="row-item"><div class="row-text"><strong>الإعدادات</strong><small>تخصيص NOVA</small></div><button class="btn secondary" data-page="settings">فتح</button></div>`,[{label:"إغلاق",secondary:true,run:closeModal}]);break;
-  case"logout":showModal("تسجيل الخروج","هل تريد إنهاء جلستك على هذا الجهاز؟",[{label:"تسجيل الخروج",run:()=>{state.user=null;closeModal();$("#app").style.display="none";$("#auth").style.display="grid";toast("تم إنهاء العرض المحلي.");}},{label:"إلغاء",secondary:true,run:closeModal}]);break;
-  case"storage-info":showModal("التخزين والبيانات","إدارة الملفات والوسائط التي تحفظها على NOVA.",[{label:"حسناً",run:closeModal}]);break;
-  case"media-quality":showModal("جودة الوسائط",`<label class="field-label">جودة تحميل الصور والفيديو</label><select class="field" id="quality"><option>تلقائي</option><option>جودة عالية</option><option>توفير البيانات</option></select>`,[{label:"حفظ",run:()=>{localStorage.setItem("novaQuality",$("#quality").value);closeModal();toast("تم حفظ تفضيل الجودة على هذا الجهاز.");}},{label:"إلغاء",secondary:true,run:closeModal}]);break;
-  case"devices":showModal("الأجهزة المرتبطة","يمكنك مراجعة جلسات الدخول النشطة وإدارتها من إعدادات أمان الحساب.",[{label:"إغلاق",secondary:true,run:closeModal}]);break;
+  case"side-menu":
+   showModal("المزيد",`<div class="row-item"><div class="row-text"><strong>الملف الشخصي</strong><small>إدارة معلوماتك</small></div><button class="btn secondary" data-page="profile">فتح</button></div><div class="row-item"><div class="row-text"><strong>الإعدادات</strong><small>تخصيص NOVA</small></div><button class="btn secondary" data-page="settings">فتح</button></div>`,[{label:"إغلاق",secondary:true,run:closeModal}]);
+   break;
+  case"logout":
+   showModal("تسجيل الخروج","هل تريد إنهاء جلستك على هذا الجهاز؟",[
+    {label:"تسجيل الخروج",run:async()=>{closeModal();await novaLogout();}},
+    {label:"إلغاء",secondary:true,run:closeModal}
+   ]);
+   break;
+  case"storage-info":showModal("التخزين والبيانات","إدارة الملفات والوسائط تحتاج تفعيل خدمة تخزين للملفات.",[{label:"حسناً",run:closeModal}]);break;
+  case"media-quality":
+   showModal("جودة الوسائط",`<label class="field-label">جودة تحميل الصور والفيديو</label><select class="field" id="quality"><option>تلقائي</option><option>جودة عالية</option><option>توفير البيانات</option></select>`,[
+    {label:"حفظ",run:()=>{localStorage.setItem("novaQuality",$("#quality").value);closeModal();toast("تم حفظ تفضيل الجودة.");}},
+    {label:"إلغاء",secondary:true,run:closeModal}
+   ]);break;
+  case"devices":showModal("الأجهزة المرتبطة","إدارة الأجهزة والجلسات تحتاج إضافة نظام إدارة جلسات مخصص.",[{label:"إغلاق",secondary:true,run:closeModal}]);break;
   case"help":showModal("مركز المساعدة","يمكنك مراجعة إعدادات الحساب والخصوصية أو الإبلاغ عن مشكلة.",[{label:"إغلاق",secondary:true,run:closeModal}]);break;
-  case"report":showModal("الإبلاغ عن مشكلة",`<div class="field-wrap"><label class="field-label">تفاصيل المشكلة</label><textarea class="field" id="reportText" rows="4" placeholder="اكتب ما حدث..."></textarea></div>`,[{label:"إرسال",run:()=>{if(!$("#reportText").value.trim()){toast("اكتب تفاصيل المشكلة.");return;}closeModal();toast("تم تجهيز البلاغ.");}},{label:"إلغاء",secondary:true,run:closeModal}]);break;
+  case"report":
+   showModal("الإبلاغ عن مشكلة",`<div class="field-wrap"><label class="field-label">تفاصيل المشكلة</label><textarea class="field" id="reportText" rows="4"></textarea></div>`,[
+    {label:"إرسال",run:()=>{if(!$("#reportText").value.trim()){toast("اكتب تفاصيل المشكلة.");return;}closeModal();toast("نظام البلاغات يحتاج ربط قاعدة البيانات.");}},
+    {label:"إلغاء",secondary:true,run:closeModal}
+   ]);break;
  }
 }
+
 document.addEventListener("click",e=>{
- const page=e.target.closest("[data-page]");if(page){navigate(page.dataset.page);return;}
- const action=e.target.closest("[data-action]");if(action){handleAction(action.dataset.action);return;}
- const tab=e.target.closest("[data-setting-tab]");if(tab){state.settingsTab=tab.dataset.settingTab;renderPage();return;}
- const sw=e.target.closest("[data-switch]");if(sw){const key=sw.dataset.switch;state.settings[key]=!state.settings[key];renderPage();return;}
- const color=e.target.closest("[data-color]");if(color){document.documentElement.style.setProperty("--purple",color.dataset.color);$$("[data-color]").forEach(b=>b.classList.toggle("selected",b===color));return;}
- const filter=e.target.closest("[data-filter]");if(filter){state.activeFilter=filter.dataset.filter;$$("[data-filter]").forEach(b=>b.classList.toggle("active",b===filter));}
+ const page=e.target.closest("[data-page]");
+ if(page){navigate(page.dataset.page);return;}
+ const action=e.target.closest("[data-action]");
+ if(action){handleAction(action.dataset.action,action);return;}
+ const tab=e.target.closest("[data-setting-tab]");
+ if(tab){state.settingsTab=tab.dataset.settingTab;renderPage();return;}
+ const sw=e.target.closest("[data-switch]");
+ if(sw){const key=sw.dataset.switch;state.settings[key]=!state.settings[key];renderPage();return;}
+ const color=e.target.closest("[data-color]");
+ if(color){document.documentElement.style.setProperty("--purple",color.dataset.color);$$("[data-color]").forEach(b=>b.classList.toggle("selected",b===color));return;}
+ const filter=e.target.closest("[data-filter]");
+ if(filter){state.activeFilter=filter.dataset.filter;$$("[data-filter]").forEach(b=>b.classList.toggle("active",b===filter));}
 });
+
 $("#modalBackdrop").addEventListener("click",e=>{if(e.target===$("#modalBackdrop"))closeModal();});
 $("#globalSearch").addEventListener("keydown",e=>{
- if(e.key==="Enter"){const q=e.target.value.trim();if(q){navigate("contacts");const input=$("#contactSearch");if(input){input.value=q;input.dispatchEvent(new Event("input"));}}}
+ if(e.key==="Enter"){
+  const q=e.target.value.trim();
+  if(q){navigate("contacts");const input=$("#contactSearch");if(input){input.value=q;input.dispatchEvent(new Event("input"));}}
+ }
 });
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 
-/* Splash screen: minimum five seconds before showing the app entry screen. */
-const splashStarted=Date.now();
+/* ابدأ Firebase وانتظر نتيجة حالة تسجيل الدخول */
+initializeFirebase();
+
+/* شاشة البداية: خمس ثوانٍ على الأقل، ثم تنتظر Firebase */
 window.addEventListener("load",()=>{
  const remaining=Math.max(0,5000-(Date.now()-splashStarted));
  setTimeout(()=>{
-  $("#splash").classList.add("hide");
-  setTimeout(()=>{
-   $("#splash").style.display="none";
-   $("#auth").style.display="grid";
-  },650);
+  splashFinished=true;
+  finishBoot();
  },remaining);
 });
 </script>
 </body>
-</html>
+ </html>
