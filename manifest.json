@@ -1,51 +1,33 @@
-{
-  "id": "./",
-  "name": "MEKA — ميكا",
-  "short_name": "MEKA",
-  "description": "MEKA منصة التواصل والمراسلة الحديثة",
 
+{
+  "id": "/",
+  "name": "NOVA Messenger",
+  "short_name": "NOVA",
+  "description": "A modern messaging experience",
   "lang": "ar",
   "dir": "rtl",
-
-  "start_url": "./index.html",
-  "scope": "./",
-
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "display_override": [
-    "standalone",
-    "minimal-ui"
-  ],
-
-  "orientation": "portrait",
-
-  "background_color": "#071c18",
-  "theme_color": "#071c18",
-
+  "orientation": "portrait-primary",
+  "background_color": "#0D1018",
+  "theme_color": "#0D1018",
   "categories": [
-    "social",
-    "communication"
+    "communication",
+    "social"
   ],
-
-  "prefer_related_applications": false,
-
   "icons": [
     {
-      "src": "./assets/icon-192.png",
+      "src": "./assets/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./assets/icon-512.png",
+      "src": "./assets/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "./assets/icon-maskable.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ]
 }
