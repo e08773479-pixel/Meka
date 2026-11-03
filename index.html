@@ -1,13 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0D1018">
+  <meta name="description" content="NOVA — A new way to connect">
 
-  <meta name="theme-color" content="#10111A">
-  <meta name="description" content="NOVA — تواصل بطريقة جديدة">
-
-  <title>NOVA | نوفا</title>
+  <title>NOVA</title>
 
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml">
@@ -22,239 +22,121 @@
 </head>
 
 <body>
-
   <div id="app">
 
     <div id="app-loader" class="app-loader">
-      <div class="loader-logo">N</div>
-      <div class="loader-indicator"></div>
-      <span>NOVA</span>
+      <div class="loader-logo"><span>N</span></div>
+      <div class="loader-brand">NOVA</div>
+      <div class="loader-subtitle">A new way to connect</div>
     </div>
 
     <div id="app-layout" class="app-layout">
 
       <aside id="sidebar" class="sidebar">
-
         <header class="sidebar-header">
-
           <a href="/" class="brand" aria-label="NOVA الرئيسية">
             <span class="brand-symbol">N</span>
             <span class="brand-name">NOVA</span>
           </a>
 
           <div class="header-actions">
-
-            <button
-              class="icon-button"
-              id="new-chat-button"
-              type="button"
-              aria-label="محادثة جديدة"
-              title="محادثة جديدة">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 5v14M5 12h14"/>
-              </svg>
+            <button class="icon-button" id="new-chat-button" type="button" aria-label="محادثة جديدة">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
             </button>
-
-            <button
-              class="icon-button"
-              id="sidebar-menu-button"
-              type="button"
-              aria-label="القائمة"
-              title="القائمة">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="5" cy="12" r="1"/>
-                <circle cx="12" cy="12" r="1"/>
-                <circle cx="19" cy="12" r="1"/>
-              </svg>
+            <button class="icon-button" id="sidebar-menu-button" type="button" aria-label="القائمة">
+              <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
             </button>
-
           </div>
         </header>
 
         <div class="sidebar-search">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="7"/>
-            <path d="m16 16 4 4"/>
-          </svg>
-
-          <input
-            id="chat-search"
-            type="search"
-            placeholder="ابحث عن محادثة..."
-            autocomplete="off">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+          <input id="chat-search" type="search" placeholder="ابحث عن محادثة..." autocomplete="off">
         </div>
 
         <nav class="chat-filters" aria-label="تصنيف المحادثات">
-          <button class="filter-button active" data-filter="all">
-            الكل
-          </button>
-
-          <button class="filter-button" data-filter="unread">
-            غير مقروءة
-          </button>
-
-          <button class="filter-button" data-filter="groups">
-            المجموعات
-          </button>
+          <button class="filter-button active" data-filter="all">الكل</button>
+          <button class="filter-button" data-filter="unread">غير مقروءة</button>
+          <button class="filter-button" data-filter="groups">المجموعات</button>
         </nav>
 
         <div class="sidebar-section-title">
           <span>المحادثات</span>
-          <button id="chat-sort-button" type="button">
-            الأحدث
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m7 10 5 5 5-5"/>
-            </svg>
-          </button>
+          <button id="chat-sort-button" type="button">الأحدث</button>
         </div>
 
-        <div id="chat-list" class="chat-list">
-          <!-- يتم إنشاء المحادثات من نظام البيانات -->
-        </div>
+        <div id="chat-list" class="chat-list"></div>
 
         <footer class="sidebar-footer">
-
-          <div class="profile-avatar" id="profile-avatar">
-            <span>?</span>
-          </div>
-
+          <div class="profile-avatar" id="profile-avatar"><span>?</span></div>
           <div class="profile-information">
             <strong id="profile-name">حسابي</strong>
             <span id="profile-status">غير مسجل الدخول</span>
           </div>
-
-          <button
-            id="settings-button"
-            class="icon-button"
-            type="button"
-            aria-label="الإعدادات"
-            title="الإعدادات">
-
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+          <button id="settings-button" class="icon-button" type="button" aria-label="الإعدادات">
+            <svg viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="3"/>
-              <path d="m19.4 15 .1.1a2 2 0 1 1-2.8 2.8l-.1-.1a2 2 0 0 0-3.4 1.4v.3a2 2 0 1 1-4 0v-.2A2 2 0 0 0 5.8 17l-.1.1a2 2 0 1 1-2.8-2.8L3 14a2 2 0 0 0-1.4-3.4h-.2a2 2 0 1 1 0-4h.2A2 2 0 0 0 3 3.2l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a2 2 0 0 0 3.4-1.4v-.2a2 2 0 1 1 4 0v.2A2 2 0 0 0 16.6.4l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a2 2 0 0 0 1.4 3.4h.2a2 2 0 1 1 0 4h-.2a2 2 0 0 0-1.5 4.4Z" transform="translate(1 1) scale(.92)"/>
+              <path d="M19 13.5a7.5 7.5 0 0 0 0-3l2-1.5-2-3.5-2.4 1a7.5 7.5 0 0 0-2.6-1.5L13.5 2h-4L9 5a7.5 7.5 0 0 0-2.6 1.5L4 5.5 2 9l2 1.5a7.5 7.5 0 0 0 0 3L2 15l2 3.5 2.4-1A7.5 7.5 0 0 0 9 19l.5 3h4l.5-3a7.5 7.5 0 0 0 2.6-1.5l2.4 1 2-3.5z"/>
             </svg>
-
           </button>
-
         </footer>
-
       </aside>
 
       <main id="main-content" class="main-content">
-
         <section id="empty-state" class="empty-state">
-
           <div class="empty-illustration">
             <div class="illustration-ring ring-one"></div>
             <div class="illustration-ring ring-two"></div>
-
-            <div class="illustration-center">
-              <span>N</span>
-            </div>
+            <div class="illustration-center"><span>N</span></div>
           </div>
-
           <h1>مرحباً بك في NOVA</h1>
-
-          <p>
-            مساحة جديدة تجمعك بالأشخاص المهمين.
-            اختر محادثة للبدء.
-          </p>
-
+          <p>مساحة جديدة تجمعك بالأشخاص المهمين. اختر محادثة للبدء.</p>
         </section>
 
-        <section
-          id="conversation-panel"
-          class="conversation-panel"
-          hidden>
-
+        <section id="conversation-panel" class="conversation-panel" hidden>
           <header class="conversation-header">
-
-            <button
-              id="mobile-back-button"
-              class="icon-button mobile-back-button"
-              type="button"
-              aria-label="العودة">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m15 18-6-6 6-6"/>
-              </svg>
+            <button id="mobile-back-button" class="icon-button mobile-back-button" type="button" aria-label="العودة">
+              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
             </button>
 
             <div id="conversation-avatar" class="conversation-avatar"></div>
-
             <div class="conversation-contact">
               <strong id="conversation-name"></strong>
               <span id="conversation-presence"></span>
             </div>
 
             <div class="conversation-tools">
-
               <button class="icon-button" id="conversation-search" type="button" aria-label="بحث">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="11" cy="11" r="7"/>
-                  <path d="m16 16 4 4"/>
-                </svg>
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
               </button>
-
               <button class="icon-button" id="audio-call-button" type="button" aria-label="مكالمة صوتية">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 3a14 14 0 0 1-6-6l3-2-2-5Z"/>
-                </svg>
+                <svg viewBox="0 0 24 24"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 3a14 14 0 0 1-6-6l3-2-2-5Z"/></svg>
               </button>
-
               <button class="icon-button" id="video-call-button" type="button" aria-label="مكالمة فيديو">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <rect x="3" y="6" width="13" height="12" rx="2"/>
-                  <path d="m16 10 5-3v10l-5-3"/>
-                </svg>
+                <svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg>
               </button>
-
               <button class="icon-button" id="conversation-options" type="button" aria-label="خيارات المحادثة">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="5" cy="12" r="1"/>
-                  <circle cx="12" cy="12" r="1"/>
-                  <circle cx="19" cy="12" r="1"/>
-                </svg>
+                <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
               </button>
-
             </div>
           </header>
 
           <div id="message-list" class="message-list"></div>
 
           <form id="message-form" class="message-composer">
-
             <button id="attachment-button" class="icon-button" type="button" aria-label="إرفاق ملف">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m8 12 7-7a4 4 0 0 1 6 6l-9 9a6 6 0 0 1-9-9l9-9"/>
-              </svg>
+              <svg viewBox="0 0 24 24"><path d="m8 12 7-7a4 4 0 0 1 6 6l-9 9a6 6 0 0 1-9-9l9-9"/></svg>
             </button>
-
-            <input
-              id="message-input"
-              type="text"
-              placeholder="اكتب رسالتك..."
-              autocomplete="off"
-              maxlength="4000">
-
+            <input id="message-input" type="text" placeholder="اكتب رسالتك..." autocomplete="off" maxlength="4000">
             <button id="send-message-button" class="send-button" type="submit" aria-label="إرسال الرسالة">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m22 2-7 20-4-9-9-4Z"/>
-                <path d="M22 2 11 13"/>
-              </svg>
+              <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
             </button>
-
           </form>
-
         </section>
-
       </main>
-
     </div>
-
   </div>
 
   <script type="module" src="./js/app.js"></script>
-
 </body>
 </html>
