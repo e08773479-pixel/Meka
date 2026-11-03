@@ -1,868 +1,750 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#100d20">
+<meta name="theme-color" content="#075e54">
 <title>NOVA Messenger</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
- --bg:#0e0b1b;--panel:#171329;--panel2:#201a38;--panel3:#292144;
- --purple:#9367ff;--purple2:#7046dc;--cyan:#35d9d0;
- --text:#f7f4ff;--muted:#a29ab8;--line:#ffffff12;
- --green:#39d6a3;--red:#ff6485;--yellow:#ffc66d;
- --radius:18px;--rail:76px;--list:350px;
+ --green:#075e54;--green2:#128c7e;--lightgreen:#d9fdd3;
+ --bg:#edf2f0;--panel:#fff;--soft:#f6f9f8;--text:#172b29;
+ --muted:#778783;--line:#e5ece9;--red:#dc4854;
+ --shadow:0 8px 30px #163b3210
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Cairo,sans-serif;height:100dvh;overflow:hidden}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Cairo,sans-serif}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-button:disabled{opacity:.45;cursor:not-allowed}
-button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
-.app{height:100dvh;display:grid;grid-template-columns:var(--rail) var(--list) minmax(0,1fr);gap:10px;padding:10px}
-.rail,.side,.main{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);min-height:0}
-.rail{display:flex;align-items:center;flex-direction:column;padding:12px 7px;gap:12px}
-.logo{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:26px;font-weight:900;background:linear-gradient(145deg,#a27aff,#5430b3);box-shadow:0 8px 25px #7046dc55}
-.nav{width:47px;height:47px;border:0;border-radius:15px;background:none;color:var(--muted);font-size:19px;position:relative}
-.nav:hover,.nav.active{background:linear-gradient(135deg,#875bed,#5937b6);color:white}
-.nav-bottom{margin-top:auto}
-.side{display:flex;flex-direction:column;overflow:hidden}
-.side-head{padding:18px 17px 12px}
-.brand{display:flex;align-items:center;justify-content:space-between}
-.brand h1{font-size:26px;letter-spacing:1px;margin:0;font-weight:900;background:linear-gradient(90deg,#bda5ff,var(--cyan));color:transparent;background-clip:text}
-.tag{font-size:10px;color:var(--muted)}
-.icon{border:1px solid var(--line);background:var(--panel2);color:var(--text);width:39px;height:39px;border-radius:12px}
-.icon:hover{border-color:var(--purple)}
-.search{display:flex;gap:10px;align-items:center;margin-top:15px;background:var(--bg);border:1px solid var(--line);border-radius:13px;padding:0 12px;height:43px;color:var(--muted)}
-.search input{background:none;border:0;outline:0;color:white;width:100%;font-size:12px}
-.tabs{display:flex;gap:6px;padding:0 12px 12px;overflow:auto}
-.tabs button{white-space:nowrap;border:1px solid var(--line);background:none;color:var(--muted);border-radius:22px;padding:7px 12px;font-size:11px}
-.tabs button.active{background:#7046dc33;border-color:#9367ff88;color:#d6c8ff}
-.list{overflow:auto;flex:1;padding:4px 10px}
-.label{font-size:11px;color:var(--muted);padding:8px;display:flex;justify-content:space-between}
-.item{display:flex;gap:11px;align-items:center;padding:10px;border-radius:14px;cursor:pointer}
-.item:hover,.item.active{background:#ffffff0c}
-.avatar{width:47px;height:47px;flex:0 0 47px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(145deg,#7650ca,#3e2d70);font-size:17px;font-weight:800;overflow:hidden}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.info{min-width:0;flex:1}
-.top,.bottom{display:flex;justify-content:space-between;align-items:center;gap:5px}
-.name{font-size:12px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.preview,.time{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.preview{margin-top:4px}
-.badge{background:var(--purple);border-radius:20px;padding:1px 7px;font-size:10px}
-.empty{text-align:center;color:var(--muted);font-size:12px;padding:35px 15px;line-height:2}
-.main{display:flex;flex-direction:column;overflow:hidden;position:relative}
-.header{height:75px;flex:0 0 75px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:10px 17px;gap:12px}
-.head-info{flex:1;min-width:0}
-.head-info strong{font-size:14px;display:block}
-.head-info small{font-size:10px;color:var(--green)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.hidden{display:none!important}
+.shell{height:100dvh;max-width:1600px;margin:auto;background:var(--panel);display:grid;grid-template-columns:76px 350px minmax(0,1fr);overflow:hidden;box-shadow:var(--shadow)}
+.rail{background:#f7faf9;border-left:1px solid var(--line);display:flex;align-items:center;flex-direction:column;padding:13px 8px;gap:9px}
+.brand{height:48px;width:48px;border-radius:16px;background:linear-gradient(140deg,#1bc99a,#08766b);display:grid;place-items:center;color:white;font-size:23px;font-weight:900;margin-bottom:13px}
+.rail button{border:0;background:transparent;color:#6b7b78;width:49px;height:49px;border-radius:15px;font-size:21px}
+.rail button.active,.rail button:hover{background:#dff4ed;color:var(--green)}
+.rail .push{flex:1}
+.sidebar{background:#fff;border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.side-head{padding:18px 17px 12px;display:flex;justify-content:space-between;align-items:center}
+.side-head h2{margin:0;font-size:23px;font-weight:900;color:var(--green)}
 .actions{display:flex;gap:7px}
-.content{flex:1;overflow:auto;padding:20px;background:radial-gradient(ellipse at 50% 40%,#7046dc0c,transparent 65%)}
-.welcome{height:100%;min-height:300px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:var(--muted)}
-.welcome .logo{width:95px;height:95px;font-size:48px;border-radius:30px;margin-bottom:18px}
-.welcome h2{color:white;margin:0 0 7px}
-.welcome p{max-width:330px;font-size:12px;line-height:2}
-.bubble-row{display:flex;margin:12px 0}
-.bubble-row.mine{justify-content:flex-start}
-.bubble-row.other{justify-content:flex-end}
-.bubble{max-width:min(78%,520px);padding:10px 14px 7px;font-size:12px;line-height:1.9;border:1px solid var(--line);border-radius:17px;overflow-wrap:anywhere}
-.mine .bubble{background:linear-gradient(135deg,#6742bf,#4d338e);border-bottom-left-radius:5px}
-.other .bubble{background:var(--panel2);border-bottom-right-radius:5px}
-.meta{font-size:9px;color:#c8b9ec;text-align:left;margin-top:3px}
-.composer{display:flex;align-items:center;gap:9px;padding:12px;border-top:1px solid var(--line)}
-.composer input{height:46px;min-width:0;flex:1;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:white;padding:0 14px}
-.send{height:46px;width:47px;border:0;border-radius:14px;color:white;background:linear-gradient(135deg,var(--purple),var(--purple2))}
-.composer-note{text-align:center;font-size:9px;color:var(--muted);padding-bottom:7px}
-.screen{position:fixed;inset:0;background:#090713eF;z-index:20;display:none;place-items:center;padding:15px}
-.dialog{width:min(480px,100%);max-height:90dvh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:22px}
-.dialog h2{font-size:19px;margin:0 0 14px}
-.field{width:100%;height:44px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:white;padding:0 12px;margin:6px 0}
-textarea.field{height:95px;padding:10px;resize:vertical}
-.primary,.secondary,.danger{height:43px;padding:0 16px;border-radius:12px;border:0;font-weight:700}
-.primary{background:linear-gradient(135deg,var(--purple),var(--purple2));color:white}
-.secondary{background:var(--panel3);border:1px solid var(--line);color:white}
-.danger{background:#ff64851c;color:var(--red);border:1px solid #ff648544}
-.full{width:100%;margin-top:9px}
-.row{display:flex;gap:8px;align-items:center}
+.icon-btn{border:0;background:var(--soft);color:var(--green);width:39px;height:39px;border-radius:13px;font-size:18px}
+.search{margin:0 14px 12px;position:relative}
+.search input{width:100%;border:0;background:#f1f5f3;border-radius:13px;padding:11px 40px 11px 12px;outline:none}
+.search:before{content:"⌕";position:absolute;right:14px;top:3px;font-size:25px;color:var(--muted)}
+.tabs{display:flex;gap:5px;padding:0 12px 10px;overflow:auto}
+.tabs button{border:0;border-radius:20px;padding:7px 13px;background:#f2f6f4;color:var(--muted);white-space:nowrap;font-size:12px}
+.tabs button.active{background:#dff4ed;color:var(--green);font-weight:800}
+.list{overflow:auto;flex:1}
+.list-item{display:flex;align-items:center;gap:12px;padding:12px 15px;cursor:pointer;border-bottom:1px solid #f1f4f3}
+.list-item:hover,.list-item.selected{background:#f0f8f5}
+.avatar{width:48px;height:48px;flex:none;border-radius:50%;background:linear-gradient(145deg,#c4e9df,#e8f4ef);display:grid;place-items:center;color:var(--green);font-weight:900;font-size:18px;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.item-info{min-width:0;flex:1}
+.item-info strong{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-info small{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-meta{color:var(--muted);font-size:10px}
+.main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#e9f0ed;position:relative}
+.welcome{margin:auto;text-align:center;padding:25px;color:var(--muted)}
+.welcome .big-logo{font-size:70px;color:var(--green)}
+.welcome h1{color:var(--green);font-size:30px;margin:5px}
+.chat-head{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:10px 17px;gap:12px}
+.chat-head .head-info{flex:1;min-width:0}
+.chat-head strong{display:block}
+.chat-head small{color:var(--muted)}
+.chat-tools{display:flex;gap:6px}
+.chat-tools button{border:0;background:#f1f6f4;color:var(--green);width:39px;height:39px;border-radius:13px}
+.messages{flex:1;overflow:auto;padding:22px 6%;display:flex;flex-direction:column;gap:8px;background-color:#e9f0ed;background-image:radial-gradient(#d7e2dd 0.7px,transparent .7px);background-size:18px 18px}
+.bubble{max-width:min(76%,520px);padding:9px 12px 6px;border-radius:14px;background:#fff;box-shadow:0 1px 2px #0000000b;align-self:flex-start;overflow-wrap:anywhere}
+.bubble.mine{align-self:flex-end;background:var(--lightgreen);border-top-left-radius:4px}
+.bubble:not(.mine){border-top-right-radius:4px}
+.bubble .sender{font-size:11px;font-weight:900;color:var(--green)}
+.bubble .body{font-size:14px;white-space:pre-wrap}
+.bubble .time{font-size:9px;color:#7d8b86;text-align:left;margin-top:3px}
+.bubble img,.bubble video{max-width:100%;max-height:280px;border-radius:9px}
+.composer{background:#f7faf9;padding:10px 13px;display:flex;align-items:flex-end;gap:8px}
+.composer textarea{flex:1;resize:none;max-height:120px;border:0;border-radius:13px;padding:11px 13px;outline:none;background:#fff;min-height:44px}
+.composer button{border:0;background:var(--green);color:white;width:44px;height:44px;border-radius:14px;font-size:19px}
+.composer .attach{background:#e5f1ed;color:var(--green)}
+.panel-view{position:absolute;inset:0;background:#fff;z-index:4;overflow:auto;padding:20px}
+.panel-title{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding-bottom:13px;margin-bottom:15px}
+.panel-title h2{margin:0;color:var(--green);font-size:21px;flex:1}
+.panel-title button{border:0;background:#eef5f2;color:var(--green);border-radius:10px;padding:8px 13px}
+.card{border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;background:#fff}
+.card h3{margin:0 0 9px;color:var(--green)}
+.field{margin:10px 0}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px;outline:none;background:#fbfdfc}
+.primary{border:0;border-radius:11px;background:var(--green);color:#fff;padding:10px 16px;font-weight:800}
+.secondary{border:0;border-radius:11px;background:#eaf4f0;color:var(--green);padding:10px 14px;font-weight:700}
+.danger{background:#fff0f0;color:var(--red)}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .row>*{flex:1}
-.muted{color:var(--muted);font-size:11px}
-.toast{position:fixed;z-index:60;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;transition:.2s;background:#30264e;border:1px solid var(--line);border-radius:12px;padding:11px 17px;font-size:12px;pointer-events:none}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-.profile-cover{height:110px;border-radius:15px;background:linear-gradient(120deg,#3d267b,#1b797b);margin-bottom:-40px}
-.profile-avatar{width:88px;height:88px;border:4px solid var(--panel);border-radius:25px;position:relative;margin-right:15px;background:var(--panel2);overflow:hidden;display:grid;place-items:center;font-size:28px}
-.profile-avatar img{width:100%;height:100%;object-fit:cover}
-.profile-body{padding:0 15px}
-.setting{display:flex;align-items:center;justify-content:space-between;padding:13px 5px;border-bottom:1px solid var(--line);font-size:12px}
-.auth{position:fixed;inset:0;z-index:40;background:radial-gradient(ellipse at 50% 20%,#38246e,#0e0b1b 65%);display:none;place-items:center;padding:18px}
-.auth-card{width:min(420px,100%);background:#171329ed;border:1px solid var(--line);border-radius:25px;padding:28px;text-align:center}
-.auth-card .logo{width:75px;height:75px;margin:0 auto 15px;font-size:38px}
-.auth-card h2{margin:0}
-.auth-card p{font-size:12px;color:var(--muted);line-height:2}
-.auth-card .field{text-align:right}
-.auth-error{color:var(--red);font-size:11px;min-height:20px;margin-top:7px}
-.mobile-back{display:none}
-@media(max-width:900px){:root{--list:300px}.optional{display:none}}
-@media(max-width:650px){
- .app{display:block;padding:0}
- .rail{display:none}
- .side,.main{position:absolute;inset:0;border:0;border-radius:0}
- .main{display:none}
- .app.chat-open .side{display:none}
- .app.chat-open .main{display:flex}
- .header{height:65px;flex-basis:65px;padding:8px 10px}
- .content{padding:13px}
- .composer{padding:9px}
- .mobile-back{display:block}
+.stat{background:#f1f8f5;border-radius:13px;padding:13px;text-align:center}
+.stat b{display:block;color:var(--green);font-size:23px}
+.stat small{color:var(--muted)}
+.story-strip{display:flex;gap:13px;overflow:auto;padding:10px 14px;border-bottom:1px solid var(--line)}
+.story{min-width:64px;text-align:center;font-size:11px;color:var(--muted);cursor:pointer}
+.story .avatar{width:58px;height:58px;border:3px solid #20ae83;padding:2px}
+.empty{text-align:center;color:var(--muted);padding:25px;font-size:13px}
+#toast{position:fixed;z-index:30;bottom:25px;left:50%;transform:translateX(-50%);background:#173d36;color:#fff;padding:11px 18px;border-radius:12px;box-shadow:var(--shadow);font-size:13px;display:none;max-width:90vw}
+#auth{min-height:100dvh;display:grid;place-items:center;padding:20px;background:linear-gradient(145deg,#e5f4ee,#f7faf8)}
+.auth-card{background:#fff;width:min(440px,100%);padding:27px;border-radius:23px;box-shadow:var(--shadow)}
+.auth-logo{text-align:center;color:var(--green);font-size:35px;font-weight:900}
+.auth-card h2{text-align:center;margin:0 0 15px}
+.auth-switch{text-align:center;color:var(--green);cursor:pointer;margin-top:13px;font-size:13px}
+.mobile-bar{display:none}
+@media(max-width:850px){
+ .shell{grid-template-columns:1fr;grid-template-rows:1fr 62px}
+ .rail{display:none}.sidebar{display:flex;border:0}.main{display:none}
+ .shell.in-chat .sidebar{display:none}.shell.in-chat .main{display:flex}
+ .mobile-bar{display:flex;grid-row:2;background:#fff;border-top:1px solid var(--line);justify-content:space-around;align-items:center}
+ .mobile-bar button{border:0;background:none;color:var(--muted);font-size:20px}
+ .mobile-bar button.active{color:var(--green)}
+ .messages{padding:15px 12px}
+ .chat-head{height:62px}
+ .panel-view{padding:14px}
 }
 </style>
 </head>
-
 <body>
-<div class="app" id="app">
- <nav class="rail">
-  <div class="logo">N</div>
-  <button class="nav active" data-page="chats" title="المحادثات"><i class="fa-solid fa-comments"></i></button>
-  <button class="nav" data-page="friends" title="الأصدقاء"><i class="fa-solid fa-user-group"></i></button>
-  <button class="nav" data-page="groups" title="المجموعات"><i class="fa-solid fa-people-group"></i></button>
-  <button class="nav" data-page="communities" title="المجتمعات"><i class="fa-solid fa-earth-africa"></i></button>
-  <button class="nav" data-page="channels" title="القنوات"><i class="fa-solid fa-tower-broadcast"></i></button>
-  <button class="nav" data-page="stories" title="الحالات"><i class="fa-solid fa-circle-play"></i></button>
-  <div class="nav-bottom">
-   <button class="nav" data-page="settings" title="الإعدادات"><i class="fa-solid fa-gear"></i></button>
-   <button class="nav" data-page="profile" title="ملفي"><i class="fa-solid fa-user"></i></button>
-  </div>
- </nav>
 
- <aside class="side">
-  <div class="side-head">
-   <div class="brand"><h1>NOVA</h1><button class="icon" id="newBtn"><i class="fa-solid fa-plus"></i></button></div>
-   <div class="tag">تواصل بلا حدود ✦</div>
-   <label class="search"><i class="fa fa-search"></i><input id="search" placeholder="ابحث..."></label>
-  </div>
-  <div class="tabs" id="tabs">
-   <button class="active" data-filter="all">الكل</button>
-   <button data-filter="unread">غير مقروء</button>
-   <button data-filter="direct">شخصي</button>
-   <button data-filter="group">مجموعات</button>
-  </div>
-  <div class="list">
-   <div class="label"><span id="listTitle">المحادثات</span><span id="listCount">0</span></div>
-   <div id="listArea" class="empty">جاري التحميل...</div>
-  </div>
+<section id="auth">
+ <div class="auth-card">
+  <div class="auth-logo">✦ NOVA</div>
+  <h2 id="auth-heading">مرحباً بك في NOVA</h2>
+  <div class="field"><label>البريد الإلكتروني</label><input id="auth-email" type="email" placeholder="name@example.com"></div>
+  <div class="field"><label>كلمة المرور</label><input id="auth-password" type="password" placeholder="••••••••"></div>
+  <div class="field hidden" id="name-field"><label>اسمك الظاهر</label><input id="auth-name" placeholder="اكتب اسمك"></div>
+  <button class="primary" id="auth-submit" style="width:100%" onclick="submitAuth()">تسجيل الدخول</button>
+  <div class="auth-switch" id="auth-switch" onclick="toggleAuth()">إنشاء حساب جديد</div>
+  <p style="font-size:11px;color:#82918c;text-align:center">بالتسجيل أنت توافق على شروط استخدام NOVA.</p>
+ </div>
+</section>
+
+<div class="shell hidden" id="app">
+ <aside class="rail">
+  <div class="brand">N</div>
+  <button class="active" title="المحادثات" onclick="showSection('chats',this)">▤</button>
+  <button title="الحالات" onclick="showSection('stories',this)">◉</button>
+  <button title="الأصدقاء" onclick="showSection('friends',this)">♧</button>
+  <button title="المجموعات" onclick="showSection('groups',this)">♧</button>
+  <button title="القنوات" onclick="showSection('channels',this)">◈</button>
+  <button title="المجتمعات" onclick="showSection('communities',this)">⌘</button>
+  <div class="push"></div>
+  <button title="الملف الشخصي" onclick="showSection('profile',this)">◉</button>
+  <button title="الإعدادات" onclick="showSection('settings',this)">⚙</button>
  </aside>
 
- <main class="main">
-  <header class="header">
-   <button class="icon mobile-back" id="back"><i class="fa fa-arrow-right"></i></button>
-   <div class="avatar" id="headAvatar">N</div>
-   <div class="head-info"><strong id="headName">NOVA Messenger</strong><small id="headStatus">مساحة تواصلك</small></div>
+ <section class="sidebar">
+  <header class="side-head">
+   <h2>NOVA</h2>
    <div class="actions">
-    <button class="icon optional" id="searchInChat" title="بحث"><i class="fa fa-search"></i></button>
-    <button class="icon optional" id="callBtn" title="مكالمة"><i class="fa fa-phone"></i></button>
-    <button class="icon optional" id="videoBtn" title="فيديو"><i class="fa fa-video"></i></button>
-    <button class="icon" id="chatMore" title="المزيد"><i class="fa fa-ellipsis-vertical"></i></button>
+    <button class="icon-btn" title="محادثة جديدة" onclick="newChat()">＋</button>
+    <button class="icon-btn" title="قائمة" onclick="showSection('settings')">⋮</button>
    </div>
   </header>
-  <section class="content" id="content">
-   <div class="welcome"><div class="logo">N</div><h2>أهلاً بك في NOVA</h2><p>مكانك للتواصل والمشاركة. اختر محادثة من القائمة أو ابدأ محادثة جديدة.</p></div>
-  </section>
-  <form class="composer" id="composer">
-   <button class="icon" type="button" id="attachBtn" title="إرفاق"><i class="fa fa-paperclip"></i></button>
-   <input id="message" placeholder="اكتب رسالة..." autocomplete="off" disabled>
-   <button class="send" id="sendBtn" disabled><i class="fa fa-paper-plane"></i></button>
-  </form>
-  <div class="composer-note">NOVA Messenger · تواصل آمن</div>
- </main>
-</div>
-
-<!-- نافذة الدخول -->
-<div class="auth" id="auth">
- <div class="auth-card">
-  <div class="logo">N</div>
-  <h2>مرحباً بك في NOVA</h2>
-  <p>سجّل الدخول أو أنشئ حسابك للبدء.</p>
-  <div id="authFields">
-   <input class="field" id="authName" placeholder="اسم العرض (للحساب الجديد)" autocomplete="name">
-   <input class="field" id="authEmail" type="email" placeholder="البريد الإلكتروني">
-   <input class="field" id="authPassword" type="password" placeholder="كلمة المرور">
+  <div class="search"><input id="list-search" placeholder="ابحث في المحادثات..." oninput="filterList()"></div>
+  <div class="story-strip" id="story-strip"></div>
+  <div class="tabs">
+   <button class="active" onclick="setListFilter('all',this)">الكل</button>
+   <button onclick="setListFilter('unread',this)">غير مقروءة</button>
+   <button onclick="setListFilter('groups',this)">مجموعات</button>
+   <button onclick="setListFilter('friends',this)">أصدقاء</button>
   </div>
-  <button class="primary full" id="loginBtn">تسجيل الدخول</button>
-  <button class="secondary full" id="signupBtn">إنشاء حساب جديد</button>
-  <button class="secondary full" id="googleBtn"><i class="fa-brands fa-google"></i> المتابعة باستخدام Google</button>
-  <div class="auth-error" id="authError"></div>
- </div>
-</div>
+  <div class="list" id="conversation-list"><div class="empty">جاري تحميل المحادثات...</div></div>
+ </section>
 
-<!-- نافذة عامة -->
-<div class="screen" id="modal">
- <div class="dialog">
-  <div class="row"><h2 id="modalTitle">NOVA</h2><button class="icon" id="closeModal" style="flex:0 0 40px"><i class="fa fa-xmark"></i></button></div>
-  <div id="modalBody"></div>
- </div>
+ <main class="main" id="main">
+  <div class="welcome" id="welcome">
+   <div class="big-logo">✦</div><h1>NOVA Messenger</h1>
+   <p>رسائلك وأصدقاؤك ومجتمعاتك في مكان واحد.</p>
+   <button class="primary" onclick="newChat()">ابدأ محادثة جديدة</button>
+  </div>
+  <section id="chat-screen" class="hidden" style="display:flex;flex-direction:column;min-height:0;flex:1">
+   <header class="chat-head">
+    <button class="icon-btn" onclick="backToList()" style="display:none" id="back-button">‹</button>
+    <div class="avatar" id="chat-avatar">N</div>
+    <div class="head-info"><strong id="chat-title">المحادثة</strong><small id="chat-subtitle">NOVA</small></div>
+    <div class="chat-tools">
+     <button title="بحث في الرسائل" onclick="searchMessages()">⌕</button>
+     <button title="مكالمة صوتية" onclick="startCall('audio')">☎</button>
+     <button title="مكالمة فيديو" onclick="startCall('video')">▣</button>
+     <button title="معلومات المحادثة" onclick="conversationInfo()">ⓘ</button>
+    </div>
+   </header>
+   <div class="messages" id="messages"></div>
+   <div class="composer">
+    <button class="attach" title="إرفاق ملف" onclick="document.getElementById('file-input').click()">＋</button>
+    <input type="file" id="file-input" class="hidden" onchange="uploadAttachment(this.files[0])">
+    <textarea id="message-input" rows="1" placeholder="اكتب رسالة..." onkeydown="messageKeydown(event)"></textarea>
+    <button title="إرسال" onclick="sendMessage()">➤</button>
+   </div>
+  </section>
+  <section id="panel" class="panel-view hidden"></section>
+ </main>
+
+ <nav class="mobile-bar">
+  <button class="active" onclick="mobileSection('chats',this)">▤</button>
+  <button onclick="mobileSection('stories',this)">◉</button>
+  <button onclick="mobileSection('friends',this)">♧</button>
+  <button onclick="mobileSection('groups',this)">⌘</button>
+  <button onclick="mobileSection('settings',this)">⚙</button>
+ </nav>
 </div>
-<div class="toast" id="toast"></div>
+<div id="toast"></div>
 
 <script>
-/* =========================================================
-   NOVA MESSENGER — SINGLE FILE APP
-   Supabase project: MEKA CHAT
-   No service_role key is used in this browser application.
-========================================================= */
-
+/* ================== إعداد الاتصال ================== */
 const SUPABASE_URL = "https://rtlxnzyzlkezukyfgjbs.supabase.co";
-const SUPABASE_KEY = "sb_publishable_qQJb_EzE3NgW74IxkwRDmw_0y4XIymI";
-const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const SUPABASE_ANON_KEY = "sb_publishable_qQJb_EzE3NgW74IxkwRDmw_0y4XIymI";
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
-
-const state = {
- user:null, profile:null, conversations:[], current:null,
- messages:[], channel:null, filter:"all", page:"chats",
- people:[], pending:[], groups:[], stories:[], settings:null
-};
+let currentUser=null, myProfile=null, currentConversation=null;
+let conversations=[], activeChannel=null, authMode="login", currentFilter="all";
+let messageCache=[], friendCache=[], profileCache=[];
+const $=id=>document.getElementById(id);
+const escapeHTML=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const initials=s=>(s||"?").trim().slice(0,1).toUpperCase();
 
 function toast(message){
- const el=$("#toast");el.textContent=message;el.classList.add("show");
- setTimeout(()=>el.classList.remove("show"),2600);
+ const el=$("toast");el.textContent=message;el.style.display="block";
+ clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display="none",3000);
 }
-function errorText(error){
- console.error(error);
- return error?.message || "حدث خطأ غير متوقع";
+function showAuth(){ $("auth").classList.remove("hidden");$("app").classList.add("hidden");}
+function showApp(){ $("auth").classList.add("hidden");$("app").classList.remove("hidden");}
+function toggleAuth(){
+ authMode=authMode==="login"?"signup":"login";
+ $("auth-heading").textContent=authMode==="login"?"مرحباً بك في NOVA":"إنشاء حساب NOVA";
+ $("auth-submit").textContent=authMode==="login"?"تسجيل الدخول":"إنشاء الحساب";
+ $("auth-switch").textContent=authMode==="login"?"إنشاء حساب جديد":"لديك حساب؟ تسجيل الدخول";
+ $("name-field").classList.toggle("hidden",authMode!=="signup");
 }
-function safe(value=""){
- return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function submitAuth(){
+ const email=$("auth-email").value.trim(),password=$("auth-password").value;
+ if(!email||!password)return toast("اكتب البريد الإلكتروني وكلمة المرور");
+ $("auth-submit").disabled=true;
+ try{
+  let result;
+  if(authMode==="signup"){
+   result=await db.auth.signUp({email,password,options:{data:{display_name:$("auth-name").value.trim()||email.split("@")[0]}}});
+   if(result.error)throw result.error;
+   if(!result.data.session){
+    toast("تم إنشاء الحساب. راجع بريدك لتأكيد التسجيل إذا طُلب منك ذلك.");
+    return;
+   }
+  }else{
+   result=await db.auth.signInWithPassword({email,password});
+   if(result.error)throw result.error;
+  }
+  currentUser=result.data.user;
+  await ensureProfile();
+  await boot();
+ }catch(e){toast(e.message||"تعذر تسجيل الدخول");}
+ finally{$("auth-submit").disabled=false;}
 }
-function timeLabel(date){
- if(!date)return "";
- return new Date(date).toLocaleTimeString("ar-EG",{hour:"2-digit",minute:"2-digit"});
-}
-function avatarHTML(profile,size=""){
- const letter=(profile?.display_name||profile?.username||"?").trim().charAt(0);
- return `<div class="avatar ${size}">${profile?.avatar_url?`<img src="${safe(profile.avatar_url)}">`:safe(letter)}</div>`;
-}
-function showAuth(message=""){
- $("#auth").style.display="grid";
- $("#authError").textContent=message;
-}
-function hideAuth(){ $("#auth").style.display="none"; }
-function modal(title,html){
- $("#modalTitle").textContent=title;
- $("#modalBody").innerHTML=html;
- $("#modal").style.display="grid";
-}
-function closeModal(){ $("#modal").style.display="none"; }
-$("#closeModal").onclick=closeModal;
-$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
-
-async function run(promise){
- const {data,error}=await promise;
+async function ensureProfile(){
+ const {data:existing,error:readError}=await db.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();
+ if(readError)throw readError;
+ if(existing){myProfile=existing;return existing;}
+ const display=currentUser.user_metadata?.display_name||currentUser.email?.split("@")[0]||"عضو NOVA";
+ const {data,error}=await db.from("profiles").insert({id:currentUser.id,display_name:display}).select("*").single();
  if(error)throw error;
- return data;
+ myProfile=data;return data;
 }
-
-/* ---------------- AUTH ---------------- */
-
-async function signIn(){
- const email=$("#authEmail").value.trim();
- const password=$("#authPassword").value;
- if(!email||!password)throw Error("اكتب البريد الإلكتروني وكلمة المرور.");
- await run(db.auth.signInWithPassword({email,password}));
-}
-async function signUp(){
- const email=$("#authEmail").value.trim();
- const password=$("#authPassword").value;
- const display_name=$("#authName").value.trim()||email.split("@")[0];
- if(!email||password.length<6)throw Error("اكتب بريدًا صحيحًا وكلمة مرور من 6 أحرف على الأقل.");
- const {data,error}=await db.auth.signUp({email,password,options:{data:{display_name}}});
- if(error)throw error;
- if(data.user && data.session){
-  await ensureProfile(data.user,display_name);
- }else{
-  toast("راجع بريدك لتأكيد الحساب، ثم سجّل الدخول.");
- }
-}
-async function googleSignIn(){
- const {error}=await db.auth.signInWithOAuth({
-  provider:"google",
-  options:{redirectTo:location.href.split("#")[0].split("?")[0]}
- });
- if(error)throw error;
-}
-async function logout(){
- await run(db.auth.signOut());
- state.user=null;state.profile=null;state.current=null;
- location.reload();
-}
-$("#loginBtn").onclick=async()=>{
- try{$("#authError").textContent="";await signIn()}
- catch(e){$("#authError").textContent=errorText(e)}
-};
-$("#signupBtn").onclick=async()=>{
- try{$("#authError").textContent="";await signUp()}
- catch(e){$("#authError").textContent=errorText(e)}
-};
-$("#googleBtn").onclick=async()=>{
- try{await googleSignIn()}catch(e){$("#authError").textContent=errorText(e)}
-};
-
-async function ensureProfile(user,displayName){
- const existing=await db.from("profiles").select("*").eq("id",user.id).maybeSingle();
- if(existing.error)throw existing.error;
- if(existing.data){state.profile=existing.data;return existing.data}
- const row={
-  id:user.id,
-  display_name:displayName||user.email?.split("@")[0]||"عضو جديد",
-  username:null,
-  bio:"",
-  account_type:"personal"
- };
- const created=await run(db.from("profiles").insert(row).select().single());
- state.profile=created;
- return created;
-}
-async function loadProfile(){
- let result=await db.from("profiles").select("*").eq("id",state.user.id).maybeSingle();
- if(result.error)throw result.error;
- if(!result.data){
-  state.profile=await ensureProfile(state.user,state.user.user_metadata?.display_name);
- }else state.profile=result.data;
-}
-
-/* ---------------- BOOT ---------------- */
-
 async function boot(){
- const {data,error}=await db.auth.getSession();
- if(error)throw error;
- if(!data.session){showAuth();return}
- state.user=data.session.user;
- await loadProfile();
- hideAuth();
- await loadSettings();
- await loadConversations();
- await loadRequests();
- updateIdentity();
+ showApp();
+ $("welcome").classList.remove("hidden");$("chat-screen").classList.add("hidden");
+ await ensureProfile();
+ await Promise.all([loadConversations(),loadFriends(),loadStories()]);
+ subscribeRealtime();
 }
-db.auth.onAuthStateChange(async(event,session)=>{
- if(event==="SIGNED_OUT"){showAuth();return}
- if(session && !state.user){
-  state.user=session.user;
-  setTimeout(async()=>{
-   try{
-    await loadProfile();hideAuth();await loadSettings();
-    await loadConversations();await loadRequests();updateIdentity();
-   }catch(e){toast(errorText(e))}
-  },0);
- }
-});
-
-/* ---------------- PROFILE ---------------- */
-
-function updateIdentity(){
- const p=state.profile||{};
- $("#headName").textContent=p.display_name||"NOVA";
- $("#headStatus").textContent=p.nova_id||p.user_code||"حساب NOVA";
- $("#headAvatar").innerHTML=p.avatar_path
-  ? `<img src="${safe(p.avatar_path)}">`
-  : safe((p.display_name||"N").charAt(0));
-}
-async function uploadFile(file,folder){
- if(!file)throw Error("اختر ملفًا أولاً.");
- if(file.size>15*1024*1024)throw Error("الحد الأقصى للملف 15 ميجابايت.");
- const ext=file.name.split(".").pop().replace(/[^a-z0-9]/gi,"").toLowerCase()||"bin";
- const path=`${state.user.id}/${folder}/${crypto.randomUUID()}.${ext}`;
- const bucket="nova-media";
- const {data,error}=await db.storage.from(bucket).upload(path,file,{upsert:false,contentType:file.type||"application/octet-stream"});
- if(error)throw error;
- const {data:publicData}=db.storage.from(bucket).getPublicUrl(data.path);
- return {path:data.path,url:publicData.publicUrl};
-}
-async function saveProfile(form){
- const display_name=form.get("display_name")?.trim();
- const username=form.get("username")?.trim().replace(/^@/,"").toLowerCase()||null;
- const bio=form.get("bio")?.trim()||"";
- if(!display_name)throw Error("اسم العرض مطلوب.");
- const update={display_name,username,bio,updated_at:new Date().toISOString()};
- const avatar=$("#profileAvatarFile").files[0];
- const cover=$("#profileCoverFile").files[0];
- if(avatar){const up=await uploadFile(avatar,"avatars");update.avatar_path=up.url}
- if(cover){const up=await uploadFile(cover,"covers");update.cover_path=up.url}
- const saved=await run(db.from("profiles").update(update).eq("id",state.user.id).select().single());
- state.profile=saved;updateIdentity();toast("تم حفظ الملف الشخصي.");
+async function signOut(){
+ if(activeChannel)await db.removeChannel(activeChannel);
+ await db.auth.signOut();currentUser=null;myProfile=null;showAuth();
 }
 
-/* ---------------- CONVERSATIONS ---------------- */
+/* ================== الملف الشخصي و NOVA ID ================== */
+function profilePage(){
+ const p=myProfile||{};
+ $("panel").innerHTML=`
+ <div class="panel-title"><h2>الملف الشخصي</h2><button onclick="closePanel()">إغلاق</button></div>
+ <div class="card" style="text-align:center">
+  <div class="avatar" style="width:90px;height:90px;margin:auto;font-size:30px">${escapeHTML(initials(p.display_name))}</div>
+  <h2>${escapeHTML(p.display_name)}</h2>
+  <p style="color:var(--muted)">NOVA ID: <b>${escapeHTML(p.nova_id||p.user_code||"سيظهر بعد إنشاء الملف")}</b></p>
+  <button class="secondary" onclick="copyMyId()">نسخ NOVA ID</button>
+ </div>
+ <div class="row">
+  <div class="stat"><b id="profile-friends">0</b><small>الأصدقاء</small></div>
+  <div class="stat"><b id="profile-followers">0</b><small>المتابعون</small></div>
+  <div class="stat"><b id="profile-following">0</b><small>يتابعهم</small></div>
+ </div>
+ <div class="card">
+  <h3>تعديل بياناتي</h3>
+  <div class="field"><label>الاسم الظاهر</label><input id="edit-display" value="${escapeHTML(p.display_name)}"></div>
+  <div class="field"><label>اسم المستخدم</label><input id="edit-username" value="${escapeHTML(p.username||"")}" placeholder="username"></div>
+  <div class="field"><label>نبذة عني</label><textarea id="edit-bio">${escapeHTML(p.bio||"")}</textarea></div>
+  <button class="primary" onclick="saveProfile()">حفظ التغييرات</button>
+ </div>`;
+ $("panel").classList.remove("hidden");
+ loadProfileCounts();
+}
+async function copyMyId(){
+ const id=myProfile?.nova_id||myProfile?.user_code;
+ if(!id)return toast("لم يتم إنشاء NOVA ID بعد");
+ await navigator.clipboard.writeText(id);toast("تم نسخ NOVA ID");
+}
+async function saveProfile(){
+ const display_name=$("edit-display").value.trim(),username=$("edit-username").value.trim().toLowerCase(),bio=$("edit-bio").value.trim();
+ if(!display_name)return toast("اكتب اسمك");
+ const {data,error}=await db.from("profiles").update({display_name,username:username||null,bio}).eq("id",currentUser.id).select("*").single();
+ if(error)return toast(error.message);
+ myProfile=data;toast("تم حفظ الملف الشخصي");profilePage();
+}
+async function loadProfileCounts(){
+ const [friends,followers,following]=await Promise.all([
+  db.from("friendships").select("id",{count:"exact",head:true}).eq("status","accepted").or(`requester_id.eq.${currentUser.id},addressee_id.eq.${currentUser.id}`),
+  db.from("follows").select("follower_id",{count:"exact",head:true}).eq("followed_id",currentUser.id),
+  db.from("follows").select("followed_id",{count:"exact",head:true}).eq("follower_id",currentUser.id)
+ ]);
+ $("profile-friends").textContent=friends.count??0;
+ $("profile-followers").textContent=followers.count??0;
+ $("profile-following").textContent=following.count??0;
+}
 
+/* ================== المحادثات ================== */
 async function loadConversations(){
- const memberships=await run(
-  db.from("conversation_members")
-   .select("conversation_id,member_role,archived_at")
-   .eq("user_id",state.user.id)
-   .is("archived_at",null)
- );
- if(!memberships.length){
-  state.conversations=[];renderList();return;
- }
- const ids=memberships.map(x=>x.conversation_id);
- const convs=await run(db.from("conversations").select("*").in("id",ids).order("last_message_at",{ascending:false,nullsFirst:false}));
- const members=await run(db.from("conversation_members").select("conversation_id,user_id").in("conversation_id",ids));
- const otherIds=[...new Set(members.map(m=>m.user_id).filter(id=>id!==state.user.id))];
- let profiles=[];
- if(otherIds.length)profiles=await run(db.from("profiles").select("id,display_name,username,avatar_path,nova_id").in("id",otherIds));
- const latest=await run(db.from("messages").select("conversation_id,body,message_type,created_at,sender_id").in("conversation_id",ids).order("created_at",{ascending:false}).limit(200));
- state.conversations=convs.map(c=>{
-  const participantIds=members.filter(m=>m.conversation_id===c.id).map(m=>m.user_id);
-  const other=profiles.find(p=>participantIds.includes(p.id));
-  const msg=latest.find(m=>m.conversation_id===c.id);
-  return {...c,other,title:c.title||(other?.display_name||"محادثة"),last:msg?.body||"",lastAt:msg?.created_at};
- });
- renderList();
+ const {data:members,error}=await db.from("conversation_members")
+  .select("conversation_id,conversations(id,conversation_type,title,last_message_at,created_by)")
+  .eq("user_id",currentUser.id).is("archived_at",null);
+ if(error){$("conversation-list").innerHTML=`<div class="empty">${escapeHTML(error.message)}</div>`;return;}
+ const ids=(members||[]).map(x=>x.conversations).filter(Boolean);
+ conversations=ids;
+ const results=await Promise.all(conversations.map(async c=>{
+  const {data:ms}=await db.from("messages").select("body,message_type,created_at,sender_id")
+   .eq("conversation_id",c.id).order("created_at",{ascending:false}).limit(1);
+  let title=c.title||"محادثة جديدة",subtitle=ms?.[0]?.body||"ابدأ المحادثة";
+  if(c.conversation_type==="direct"){
+   const {data:other}=await db.from("conversation_members").select("user_id").eq("conversation_id",c.id).neq("user_id",currentUser.id).limit(1).maybeSingle();
+   if(other){
+    const {data:p}=await db.from("profiles").select("display_name,avatar_path").eq("id",other.user_id).maybeSingle();
+    title=p?.display_name||"مستخدم NOVA";
+   }
+  }
+  return {...c,_title:title,_subtitle:subtitle,_last:ms?.[0]?.created_at||c.last_message_at};
+ }));
+ conversations=results;
+ renderConversationList();
 }
-function renderList(){
- const area=$("#listArea");area.innerHTML="";
- let rows=state.conversations;
- const q=$("#search").value.trim().toLowerCase();
- if(q)rows=rows.filter(c=>(c.title||"").toLowerCase().includes(q)||(c.last||"").toLowerCase().includes(q));
- if(state.filter==="direct")rows=rows.filter(c=>c.conversation_type==="direct");
- if(state.filter==="group")rows=rows.filter(c=>c.conversation_type!=="direct");
- $("#listCount").textContent=rows.length;
- if(!rows.length){area.className="empty";area.textContent="لا توجد محادثات هنا حتى الآن.";return}
- area.className="";
- rows.forEach(c=>{
-  const el=document.createElement("div");
-  el.className="item"+(state.current?.id===c.id?" active":"");
-  const av=c.other?.avatar_path?`<div class="avatar"><img src="${safe(c.other.avatar_path)}"></div>`:`<div class="avatar">${safe((c.title||"N").charAt(0))}</div>`;
-  el.innerHTML=`${av}<div class="info"><div class="top"><span class="name">${safe(c.title)}</span><span class="time">${timeLabel(c.lastAt)}</span></div><div class="preview">${safe(c.last||"ابدأ المحادثة")}</div></div>`;
-  el.onclick=()=>openConversation(c);
-  area.appendChild(el);
- });
+function renderConversationList(){
+ const query=($("list-search").value||"").toLowerCase();
+ let items=conversations.filter(c=>c._title.toLowerCase().includes(query));
+ if(currentFilter==="groups")items=items.filter(c=>c.conversation_type==="group");
+ $("conversation-list").innerHTML=items.length?items.map(c=>`
+ <div class="list-item ${currentConversation?.id===c.id?"selected":""}" onclick="openConversation('${c.id}')">
+  <div class="avatar">${escapeHTML(initials(c._title))}</div>
+  <div class="item-info"><strong>${escapeHTML(c._title)}</strong><small>${escapeHTML(c._subtitle)}</small></div>
+  <div class="item-meta">${c._last?new Date(c._last).toLocaleDateString("ar-EG"):""}</div>
+ </div>`).join(""):`<div class="empty">لا توجد محادثات بعد. ابدأ محادثة جديدة.</div>`;
 }
-$("#search").addEventListener("input",renderList);
-$("#tabs").addEventListener("click",e=>{
- const b=e.target.closest("button[data-filter]");if(!b)return;
- $$("#tabs button").forEach(x=>x.classList.remove("active"));
- b.classList.add("active");state.filter=b.dataset.filter;renderList();
-});
-
-async function openConversation(conversation){
- state.current=conversation;
- $("#app").classList.add("chat-open");
- $("#headName").textContent=conversation.title;
- $("#headStatus").textContent=conversation.other?.nova_id||"محادثة NOVA";
- $("#headAvatar").textContent=(conversation.title||"N").charAt(0);
- $("#message").disabled=false;$("#sendBtn").disabled=false;
+function filterList(){renderConversationList()}
+function setListFilter(f,button){
+ currentFilter=f;document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+ button.classList.add("active");renderConversationList();
+}
+async function openConversation(id){
+ const c=conversations.find(x=>x.id===id);
+ if(!c)return;
+ currentConversation=c;
+ $("welcome").classList.add("hidden");$("panel").classList.add("hidden");$("chat-screen").classList.remove("hidden");
+ $("chat-title").textContent=c._title;$("chat-subtitle").textContent=c.conversation_type==="group"?"مجموعة NOVA":"متصل عبر NOVA";
+ $("chat-avatar").textContent=initials(c._title);
+ $("app").classList.add("in-chat");$("back-button").style.display=innerWidth<=850?"block":"none";
  await loadMessages();
- subscribeConversation(conversation.id);
- renderList();
+ subscribeConversation(id);
 }
+function backToList(){$("app").classList.remove("in-chat");}
 async function loadMessages(){
- if(!state.current)return;
- const data=await run(db.from("messages").select("*")
-  .eq("conversation_id",state.current.id)
-  .order("created_at",{ascending:true}).limit(150));
- state.messages=data;renderMessages();
+ if(!currentConversation)return;
+ const {data,error}=await db.from("messages").select("*").eq("conversation_id",currentConversation.id)
+  .order("created_at",{ascending:true}).limit(300);
+ if(error)return toast(error.message);
+ messageCache=data||[];renderMessages();
 }
 function renderMessages(){
- const area=$("#content");area.innerHTML="";
- if(!state.messages.length){
-  area.innerHTML='<div class="welcome"><div class="logo">N</div><h2>ابدأ المحادثة</h2><p>أرسل أول رسالة بينك وبين هذا الحساب.</p></div>';
-  return;
- }
- state.messages.forEach(m=>{
-  const row=document.createElement("div");
-  row.className="bubble-row "+(m.sender_id===state.user.id?"mine":"other");
-  const body=m.is_deleted?"تم حذف الرسالة":m.body||"";
-  row.innerHTML=`<div class="bubble">${safe(body)}<div class="meta">${timeLabel(m.created_at)}${m.is_edited?" · تم التعديل":""}</div></div>`;
-  area.appendChild(row);
- });
- area.scrollTop=area.scrollHeight;
-}
-function unsubscribeConversation(){
- if(state.channel){db.removeChannel(state.channel);state.channel=null}
-}
-function subscribeConversation(id){
- unsubscribeConversation();
- state.channel=db.channel("nova-chat-"+id)
- .on("postgres_changes",{event:"INSERT",schema:"public",table:"messages",filter:`conversation_id=eq.${id}`},payload=>{
-  if(!state.messages.some(m=>m.id===payload.new.id)){
-   state.messages.push(payload.new);renderMessages();
+ $("messages").innerHTML=messageCache.map(m=>{
+  const mine=m.sender_id===currentUser.id;
+  let body=escapeHTML(m.body||"");
+  if(m.message_type==="image"||m.message_type==="video"||m.message_type==="audio"||m.message_type==="file"){
+   body=`<div>${escapeHTML(m.body||"مرفق")}</div>`;
   }
+  return `<article class="bubble ${mine?"mine":""}" data-id="${m.id}">
+   <div class="body">${body}</div>
+   <div class="time">${new Date(m.created_at).toLocaleTimeString("ar-EG",{hour:"2-digit",minute:"2-digit"})}${mine?" ✓✓":""}</div>
+  </article>`;
+ }).join("");
+ $("messages").scrollTop=$("messages").scrollHeight;
+}
+function messageKeydown(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage();}}
+async function sendMessage(){
+ const body=$("message-input").value.trim();
+ if(!body||!currentConversation)return;
+ $("message-input").value="";
+ const {data,error}=await db.from("messages").insert({
+  conversation_id:currentConversation.id,sender_id:currentUser.id,message_type:"text",body
+ }).select("*").single();
+ if(error){$("message-input").value=body;return toast(error.message);}
+ messageCache.push(data);renderMessages();
+ await db.from("conversations").update({last_message_at:new Date().toISOString()}).eq("id",currentConversation.id);
+}
+async function uploadAttachment(file){
+ if(!file||!currentConversation)return;
+ const bucket=file.type.startsWith("image/")||file.type.startsWith("video/")||file.type.startsWith("audio/")?"meka-chat-media":"meka-documents";
+ const path=`${currentUser.id}/${Date.now()}-${file.name.replace(/[^\w.\-\u0600-\u06ff]/g,"_")}`;
+ toast("جاري رفع الملف...");
+ const {error:uploadError}=await db.storage.from(bucket).upload(path,file,{upsert:false});
+ if(uploadError)return toast(uploadError.message);
+ const {data:asset,error:assetError}=await db.from("media_assets").insert({
+  owner_id:currentUser.id,storage_path:path,bucket_id:bucket,mime_type:file.type,file_size:file.size
+ }).select("id").maybeSingle();
+ if(assetError)console.warn(assetError);
+ const {data:msg,error}=await db.from("messages").insert({
+  conversation_id:currentConversation.id,sender_id:currentUser.id,
+  message_type:file.type.startsWith("image/")?"image":file.type.startsWith("video/")?"video":file.type.startsWith("audio/")?"audio":"file",
+  body:`${file.name} | ${bucket}/${path}`
+ }).select("*").single();
+ if(error)return toast(error.message);
+ messageCache.push(msg);renderMessages();toast("تم رفع الملف وإرساله");
+}
+async function searchMessages(){
+ const term=prompt("اكتب كلمة للبحث داخل هذه المحادثة");
+ if(!term)return;
+ const found=messageCache.filter(m=>(m.body||"").toLowerCase().includes(term.toLowerCase()));
+ toast(`تم العثور على ${found.length} رسالة`);
+ if(found.length){const el=document.querySelector(`[data-id="${found[0].id}"]`);el?.scrollIntoView({behavior:"smooth",block:"center"});}
+}
+async function conversationInfo(){
+ if(!currentConversation)return;
+ const {data:members}=await db.from("conversation_members").select("user_id,member_role").eq("conversation_id",currentConversation.id);
+ const ids=(members||[]).map(x=>x.user_id);
+ const {data:people}=await db.from("profiles").select("id,display_name,nova_id").in("id",ids);
+ let html=`<div class="panel-title"><h2>معلومات المحادثة</h2><button onclick="closePanel()">إغلاق</button></div>
+ <div class="card"><h3>${escapeHTML(currentConversation._title)}</h3><p>عدد الأعضاء: ${ids.length}</p></div>
+ <div class="card"><h3>الأعضاء</h3>${(people||[]).map(p=>`<p>${escapeHTML(p.display_name)} — ${escapeHTML(p.nova_id||"")}</p>`).join("")}</div>`;
+ if(currentConversation.conversation_type==="group")html+=`<button class="primary" onclick="addGroupMembers()">＋ إضافة أعضاء</button>`;
+ $("panel").innerHTML=html;$("panel").classList.remove("hidden");
+}
+async function newChat(){
+ const id=prompt("اكتب NOVA ID أو اسم المستخدم للشخص الذي تريد محادثته");
+ if(!id)return;
+ const {data:p,error}=await db.from("profiles").select("id,display_name,nova_id,username").or(`nova_id.eq.${id},user_code.eq.${id},username.eq.${id}`).limit(1).maybeSingle();
+ if(error||!p)return toast("لم يتم العثور على المستخدم");
+ if(p.id===currentUser.id)return toast("لا يمكنك بدء محادثة مع نفسك");
+ const {data:conversationId,error:createError}=await db.rpc("nova_create_conversation",{p_type:"direct",p_title:null,p_member_ids:[p.id]});
+ if(createError)return toast(createError.message);
+ await loadConversations();openConversation(conversationId);
+}
+
+/* ================== إنشاء المجموعات وإضافة الأعضاء ================== */
+async function createGroup(){
+ const title=prompt("اكتب اسم المجموعة");
+ if(!title?.trim())return;
+ const membersText=prompt("اكتب NOVA IDs للأعضاء مفصولة بفواصل (اختياري)");
+ const memberIds=[];
+ if(membersText?.trim()){
+  const codes=membersText.split(",").map(x=>x.trim()).filter(Boolean);
+  for(const code of codes){
+   const {data:p}=await db.from("profiles").select("id").or(`nova_id.eq.${code},user_code.eq.${code},username.eq.${code}`).maybeSingle();
+   if(p)memberIds.push(p.id);
+  }
+ }
+ const {data:conversationId,error}=await db.rpc("nova_create_conversation",{
+  p_type:"group",p_title:title.trim(),p_member_ids:memberIds
+ });
+ if(error)return toast(error.message);
+ await loadConversations();openConversation(conversationId);toast("تم إنشاء المجموعة");
+}
+async function addGroupMembers(){
+ const input=prompt("اكتب NOVA IDs للأعضاء الجدد مفصولة بفواصل");
+ if(!input)return;
+ const ids=[];
+ for(const code of input.split(",").map(x=>x.trim()).filter(Boolean)){
+  const {data:p}=await db.from("profiles").select("id").or(`nova_id.eq.${code},user_code.eq.${code},username.eq.${code}`).maybeSingle();
+  if(p)ids.push(p.id);
+ }
+ if(!ids.length)return toast("لم يتم العثور على أعضاء");
+ const {data,error}=await db.rpc("nova_add_conversation_members",{p_conversation_id:currentConversation.id,p_member_ids:ids});
+ if(error)return toast(error.message);
+ toast(`تمت إضافة ${data} عضو`);conversationInfo();
+}
+
+/* ================== الأصدقاء والبحث ================== */
+async function loadFriends(){
+ const {data,error}=await db.from("friendships").select("*").eq("status","accepted")
+  .or(`requester_id.eq.${currentUser.id},addressee_id.eq.${currentUser.id}`);
+ if(error){friendCache=[];return;}
+ const ids=(data||[]).map(x=>x.requester_id===currentUser.id?x.addressee_id:x.requester_id);
+ if(!ids.length){friendCache=[];return;}
+ const {data:people}=await db.from("profiles").select("id,display_name,nova_id,username,avatar_path").in("id",ids);
+ friendCache=people||[];
+}
+async function friendsPage(){
+ await loadFriends();
+ $("panel").innerHTML=`
+ <div class="panel-title"><h2>الأصدقاء</h2><button onclick="closePanel()">إغلاق</button></div>
+ <div class="card"><h3>ابحث عن شخص في NOVA</h3>
+  <div class="field"><input id="people-search" placeholder="NOVA ID أو اسم المستخدم أو الاسم"></div>
+  <button class="primary" onclick="searchPeople()">بحث</button>
+  <div id="people-results"></div>
+ </div>
+ <div class="card"><h3>أصدقائي (${friendCache.length})</h3>
+  <div id="friend-list">${friendCache.map(p=>personRow(p)).join("")||'<div class="empty">لم تضف أصدقاء بعد</div>'}</div>
+ </div>
+ <div class="card"><h3>طلبات الصداقة الواردة</h3><div id="incoming-requests">جاري التحميل...</div></div>
+ <div class="card"><h3>طلبات الصداقة المرسلة</h3><div id="outgoing-requests">جاري التحميل...</div></div>`;
+ $("panel").classList.remove("hidden");await loadFriendRequests();
+}
+function personRow(p){
+ return `<div class="list-item"><div class="avatar">${escapeHTML(initials(p.display_name))}</div>
+ <div class="item-info"><strong>${escapeHTML(p.display_name)}</strong><small>${escapeHTML(p.nova_id||p.username||"")}</small></div>
+ <button class="secondary" onclick="startDirect('${p.id}')">مراسلة</button></div>`;
+}
+async function searchPeople(){
+ const q=$("people-search").value.trim();if(!q)return;
+ const safe=q.replace(/[,%()]/g,"");
+ const {data,error}=await db.from("profiles").select("id,display_name,nova_id,username,avatar_path")
+  .or(`nova_id.ilike.%${safe}%,user_code.ilike.%${safe}%,username.ilike.%${safe}%,display_name.ilike.%${safe}%`)
+  .neq("id",currentUser.id).limit(20);
+ if(error)return toast(error.message);
+ $("people-results").innerHTML=(data||[]).map(p=>`
+ <div class="list-item"><div class="avatar">${escapeHTML(initials(p.display_name))}</div>
+ <div class="item-info"><strong>${escapeHTML(p.display_name)}</strong><small>${escapeHTML(p.nova_id||"")}</small></div>
+ <button class="secondary" onclick="sendFriendRequest('${p.id}')">إضافة</button></div>`).join("")||'<div class="empty">لا توجد نتائج</div>';
+}
+async function sendFriendRequest(id){
+ if(id===currentUser.id)return;
+ const {error}=await db.from("friendships").insert({requester_id:currentUser.id,addressee_id:id,status:"pending"});
+ if(error)return toast(error.code==="23505"?"يوجد طلب صداقة بالفعل":error.message);
+ toast("تم إرسال طلب الصداقة");
+}
+async function loadFriendRequests(){
+ const {data:incoming}=await db.from("friendships").select("*").eq("addressee_id",currentUser.id).eq("status","pending");
+ const {data:outgoing}=await db.from("friendships").select("*").eq("requester_id",currentUser.id).eq("status","pending");
+ async function renderRequests(rows,target,inbound){
+  const ids=(rows||[]).map(x=>inbound?x.requester_id:x.addressee_id);
+  const {data:people}=ids.length?await db.from("profiles").select("id,display_name,nova_id").in("id",ids):{data:[]};
+  $(target).innerHTML=(people||[]).map(p=>`<div class="list-item"><div class="item-info"><strong>${escapeHTML(p.display_name)}</strong><small>${escapeHTML(p.nova_id||"")}</small></div>
+  ${inbound?`<button class="primary" onclick="acceptFriend('${p.id}')">قبول</button><button class="secondary danger" onclick="rejectFriend('${p.id}')">رفض</button>`:"<small>بانتظار الرد</small>"}</div>`).join("")||'<div class="empty">لا توجد طلبات</div>';
+ }
+ await renderRequests(incoming,"incoming-requests",true);
+ await renderRequests(outgoing,"outgoing-requests",false);
+}
+async function acceptFriend(id){
+ const {error}=await db.from("friendships").update({status:"accepted"}).eq("requester_id",id).eq("addressee_id",currentUser.id);
+ if(error)return toast(error.message);
+ toast("تم قبول طلب الصداقة");friendsPage();
+}
+async function rejectFriend(id){
+ const {error}=await db.from("friendships").delete().eq("requester_id",id).eq("addressee_id",currentUser.id);
+ if(error)return toast(error.message);friendsPage();
+}
+async function startDirect(id){
+ const {data,error}=await db.rpc("nova_create_conversation",{p_type:"direct",p_title:null,p_member_ids:[id]});
+ if(error)return toast(error.message);
+ await loadConversations();closePanel();openConversation(data);
+}
+
+/* ================== الحالات والقصص ================== */
+async function loadStories(){
+ const {data,error}=await db.from("stories").select("id,author_id,body,storage_path,created_at,expires_at")
+  .gt("expires_at",new Date().toISOString()).order("created_at",{ascending:false}).limit(80);
+ if(error)return;
+ const ids=[...new Set((data||[]).map(x=>x.author_id))];
+ const {data:people}=ids.length?await db.from("profiles").select("id,display_name").in("id",ids):{data:[]};
+ const names=Object.fromEntries((people||[]).map(p=>[p.id,p.display_name]));
+ $("story-strip").innerHTML=`<div class="story" onclick="addStory()"><div class="avatar">＋</div>حالتي</div>`+
+ (data||[]).map(s=>`<div class="story" onclick="viewStory('${s.id}')"><div class="avatar">${escapeHTML(initials(names[s.author_id]))}</div>${escapeHTML(names[s.author_id]||"عضو")}</div>`).join("");
+}
+async function addStory(){
+ const body=prompt("اكتب الحالة التي تريد نشرها");
+ if(!body?.trim())return;
+ const {error}=await db.from("stories").insert({author_id:currentUser.id,body:body.trim(),visibility:"friends"});
+ if(error)return toast(error.message);
+ toast("تم نشر الحالة");await loadStories();
+}
+async function viewStory(id){
+ const {data:s,error}=await db.from("stories").select("*").eq("id",id).single();
+ if(error)return toast(error.message);
+ alert(s.body||"حالة وسائط");
+ if(s.author_id!==currentUser.id)await db.from("story_views").insert({story_id:id,viewer_id:currentUser.id});
+}
+async function storiesPage(){
+ await loadStories();
+ $("panel").innerHTML=`<div class="panel-title"><h2>الحالات</h2><button onclick="closePanel()">إغلاق</button></div>
+ <button class="primary" onclick="addStory()">＋ إضافة حالة نصية</button>
+ <div class="card"><p>تختفي الحالات تلقائياً بعد 24 ساعة حسب إعدادات قاعدة البيانات.</p></div>`;
+ $("panel").classList.remove("hidden");
+}
+
+/* ================== المجموعات والقنوات والمجتمعات ================== */
+async function groupsPage(){
+ $("panel").innerHTML=`<div class="panel-title"><h2>المجموعات</h2><button onclick="closePanel()">إغلاق</button></div>
+ <button class="primary" onclick="createGroup()">＋ إنشاء مجموعة محادثة</button>
+ <div class="card"><p>أنشئ مجموعة ثم أضف أعضاء باستخدام NOVA ID من داخل معلومات المجموعة.</p></div>
+ <div id="groups-list"></div>`;
+ $("panel").classList.remove("hidden");
+ const groups=conversations.filter(c=>c.conversation_type==="group");
+ $("groups-list").innerHTML=groups.map(c=>`<div class="list-item" onclick="closePanel();openConversation('${c.id}')"><div class="avatar">♧</div><div class="item-info"><strong>${escapeHTML(c._title)}</strong><small>مجموعة محادثة</small></div></div>`).join("")||'<div class="empty">لا توجد مجموعات</div>';
+}
+async function channelsPage(){
+ $("panel").innerHTML=`<div class="panel-title"><h2>القنوات</h2><button onclick="closePanel()">إغلاق</button></div>
+ <div class="card"><h3>القنوات العامة</h3><p>مساحة لنشر التحديثات والمتابعة.</p><button class="primary" onclick="createChannel()">إنشاء قناة</button></div><div id="channels-list"></div>`;
+ $("panel").classList.remove("hidden");
+ const {data}=await db.from("channels").select("*").eq("is_public",true).limit(40);
+ $("channels-list").innerHTML=(data||[]).map(c=>`<div class="list-item"><div class="avatar">◈</div><div class="item-info"><strong>${escapeHTML(c.title)}</strong><small>${escapeHTML(c.description||"")}</small></div><button class="secondary" onclick="joinChannel('${c.id}')">متابعة</button></div>`).join("")||'<div class="empty">لا توجد قنوات عامة</div>';
+}
+async function createChannel(){
+ const title=prompt("اسم القناة");if(!title)return;
+ const description=prompt("وصف القناة")||"";
+ const {data,error}=await db.from("channels").insert({owner_id:currentUser.id,title,description,is_public:true}).select().single();
+ if(error)return toast(error.message);toast("تم إنشاء القناة");channelsPage();
+}
+async function joinChannel(id){
+ const {error}=await db.from("channel_members").insert({channel_id:id,user_id:currentUser.id,member_role:"member"});
+ if(error&&error.code!=="23505")return toast(error.message);toast("تمت متابعة القناة");
+}
+async function communitiesPage(){
+ $("panel").innerHTML=`<div class="panel-title"><h2>المجتمعات</h2><button onclick="closePanel()">إغلاق</button></div>
+ <div class="card"><h3>مجتمعات NOVA</h3><p>اجمع المجموعات والقنوات ذات الاهتمام المشترك.</p><button class="primary" onclick="createCommunity()">إنشاء مجتمع</button></div><div id="communities-list"></div>`;
+ $("panel").classList.remove("hidden");
+ const {data}=await db.from("communities").select("*").eq("is_public",true).limit(50);
+ $("communities-list").innerHTML=(data||[]).map(c=>`<div class="card"><h3>${escapeHTML(c.name)}</h3><p>${escapeHTML(c.description||"")}</p></div>`).join("")||'<div class="empty">لا توجد مجتمعات بعد</div>';
+}
+async function createCommunity(){
+ const name=prompt("اسم المجتمع");if(!name)return;
+ const description=prompt("وصف المجتمع")||"";
+ const {error}=await db.from("communities").insert({owner_id:currentUser.id,name,description,is_public:true});
+ if(error)return toast(error.message);toast("تم إنشاء المجتمع");communitiesPage();
+}
+
+/* ================== الإعدادات والخصوصية ================== */
+async function settingsPage(){
+ const {data:s}=await db.from("user_settings").select("*").eq("user_id",currentUser.id).maybeSingle();
+ const settings=s?.settings||{},privacy=s?.privacy||{};
+ $("panel").innerHTML=`
+ <div class="panel-title"><h2>الإعدادات</h2><button onclick="closePanel()">إغلاق</button></div>
+ <div class="card"><h3>الحساب</h3><button class="secondary" onclick="profilePage()">الملف الشخصي و NOVA ID</button>
+ <button class="secondary" onclick="signOut()">تسجيل الخروج</button></div>
+ <div class="card"><h3>المظهر</h3><div class="field"><label>السمة</label><select id="theme-select"><option value="light">فاتح</option><option value="dark">داكن</option><option value="system">تلقائي</option></select></div></div>
+ <div class="card"><h3>الخصوصية</h3>
+ <div class="field"><label>من يستطيع العثور عليّ؟</label><select id="discoverable"><option value="true">الجميع</option><option value="false">لا أحد</option></select></div>
+ <div class="field"><label>ظهوري متصل</label><select id="online-visibility"><option value="everyone">الجميع</option><option value="contacts">الأصدقاء</option><option value="nobody">لا أحد</option></select></div>
+ <div class="field"><label>آخر ظهور</label><select id="lastseen-visibility"><option value="everyone">الجميع</option><option value="contacts">الأصدقاء</option><option value="nobody">لا أحد</option></select></div>
+ <button class="primary" onclick="saveSettings()">حفظ الإعدادات</button></div>
+ <div class="card"><h3>التخزين والملفات</h3><p>تُحفظ مرفقاتك في مساحة تخزين خاصة بحسابك.</p><button class="secondary" onclick="storageInfo()">معلومات التخزين</button></div>
+ <div class="card"><h3>الأمان</h3><p>لا تشارك كلمة المرور أو مفاتيح الإدارة. استخدم كلمة مرور قوية.</p><button class="secondary" onclick="changePassword()">تغيير كلمة المرور</button></div>`;
+ $("panel").classList.remove("hidden");
+ $("theme-select").value=settings.theme||"light";
+ $("discoverable").value=String(myProfile.is_discoverable!==false);
+ $("online-visibility").value=myProfile.online_visibility||"everyone";
+ $("lastseen-visibility").value=myProfile.last_seen_visibility||"everyone";
+}
+async function saveSettings(){
+ const privacy={};
+ const settings={theme:$("theme-select").value};
+ const {error:profileError}=await db.from("profiles").update({
+  is_discoverable:$("discoverable").value==="true",
+  online_visibility:$("online-visibility").value,
+  last_seen_visibility:$("lastseen-visibility").value
+ }).eq("id",currentUser.id);
+ if(profileError)return toast(profileError.message);
+ const {error}=await db.from("user_settings").upsert({user_id:currentUser.id,theme:settings.theme,settings,privacy},{onConflict:"user_id"});
+ if(error)return toast(error.message);
+ toast("تم حفظ الإعدادات");
+}
+async function storageInfo(){
+ const {data}=await db.from("media_assets").select("file_size").eq("owner_id",currentUser.id);
+ const bytes=(data||[]).reduce((n,x)=>n+(x.file_size||0),0);
+ alert(`عدد الملفات المسجلة: ${(data||[]).length}\nالحجم التقريبي: ${(bytes/1024/1024).toFixed(2)} MB`);
+}
+async function changePassword(){
+ const password=prompt("اكتب كلمة المرور الجديدة (8 أحرف على الأقل)");
+ if(!password)return;
+ if(password.length<8)return toast("كلمة المرور قصيرة");
+ const {error}=await db.auth.updateUser({password});
+ if(error)return toast(error.message);toast("تم تحديث كلمة المرور");
+}
+
+/* ================== المكالمات ================== */
+async function startCall(type){
+ if(!currentConversation)return;
+ toast("ميزة المكالمات تحتاج إعداد WebRTC وخادم TURN وإشارات الاتصال قبل تشغيلها الفعلي.");
+ // لا ننشئ جلسة مكالمة وهمية ولا نعرض أنها بدأت قبل وجود خدمة الإشارة.
+}
+
+/* ================== التنقل والوقت الحقيقي ================== */
+function showSection(section,button){
+ document.querySelectorAll(".rail button").forEach(b=>b.classList.remove("active"));
+ button?.classList.add("active");
+ $("welcome").classList.add("hidden");$("chat-screen").classList.add("hidden");
+ $("panel").classList.remove("hidden");
+ if(section==="chats"){$("panel").classList.add("hidden");$("welcome").classList.remove("hidden");}
+ if(section==="friends")friendsPage();
+ if(section==="profile")profilePage();
+ if(section==="settings")settingsPage();
+ if(section==="stories")storiesPage();
+ if(section==="groups")groupsPage();
+ if(section==="channels")channelsPage();
+ if(section==="communities")communitiesPage();
+}
+function mobileSection(section,button){
+ document.querySelectorAll(".mobile-bar button").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");$("app").classList.remove("in-chat");
+ showSection(section);
+}
+function closePanel(){$("panel").classList.add("hidden");if(!currentConversation)$("welcome").classList.remove("hidden");}
+function subscribeRealtime(){
+ if(activeChannel)db.removeChannel(activeChannel);
+ activeChannel=db.channel("nova-user-"+currentUser.id)
+ .on("postgres_changes",{event:"*",schema:"public",table:"messages"},payload=>{
+  const m=payload.new;if(!m||m.sender_id===currentUser.id)return;
+  if(currentConversation?.id===m.conversation_id){messageCache.push(m);renderMessages();}
+  loadConversations();
+ })
+ .on("postgres_changes",{event:"*",schema:"public",table:"friendships"},()=>loadFriends())
+ .on("postgres_changes",{event:"*",schema:"public",table:"notifications",filter:`user_id=eq.${currentUser.id}`},()=>toast("لديك إشعار جديد"))
+ .subscribe();
+}
+let conversationChannel=null;
+function subscribeConversation(id){
+ if(conversationChannel)db.removeChannel(conversationChannel);
+ conversationChannel=db.channel("nova-conversation-"+id)
+ .on("postgres_changes",{event:"INSERT",schema:"public",table:"messages",filter:`conversation_id=eq.${id}`},payload=>{
+  const m=payload.new;if(m.sender_id===currentUser.id)return;
+  if(!messageCache.some(x=>x.id===m.id)){messageCache.push(m);renderMessages();}
  })
  .subscribe();
 }
-async function sendMessage(body){
- if(!state.current)throw Error("افتح محادثة أولاً.");
- const text=body.trim();if(!text)return;
- await run(db.from("messages").insert({
-  conversation_id:state.current.id,
-  sender_id:state.user.id,
-  message_type:"text",
-  body:text
- }));
- await db.from("conversations").update({last_message_at:new Date().toISOString()}).eq("id",state.current.id);
- $("#message").value="";
-}
-$("#composer").addEventListener("submit",async e=>{
- e.preventDefault();
- try{await sendMessage($("#message").value)}
- catch(err){toast(errorText(err))}
-});
 
-/* إنشاء محادثة مباشرة مع مستخدم */
-async function startDirect(profile){
- if(profile.id===state.user.id)throw Error("لا يمكنك بدء محادثة مع نفسك.");
- const existing=await run(db.from("conversation_members")
-  .select("conversation_id").eq("user_id",state.user.id));
- const ids=existing.map(x=>x.conversation_id);
- if(ids.length){
-  const matches=await run(db.from("conversation_members")
-   .select("conversation_id,user_id").in("conversation_id",ids).eq("user_id",profile.id));
-  const match=matches.find(x=>ids.includes(x.conversation_id));
-  if(match){
-   const c=state.conversations.find(x=>x.id===match.conversation_id);
-   if(c){await openConversation(c);return}
-  }
+/* ================== تشغيل الجلسة ================== */
+db.auth.getSession().then(async({data,error})=>{
+ if(error){showAuth();return;}
+ if(data.session){
+  currentUser=data.session.user;
+  try{await ensureProfile();await boot();}catch(e){toast(e.message);showAuth();}
+ }else showAuth();
+});
+db.auth.onAuthStateChange(async(event,session)=>{
+ if(event==="SIGNED_OUT"){showAuth();return;}
+ if(event==="SIGNED_IN"&&session&&!currentUser){
+  currentUser=session.user;
+  try{await ensureProfile();await boot();}catch(e){toast(e.message);}
  }
- const conv=await run(db.from("conversations").insert({
-  conversation_type:"direct",created_by:state.user.id
- }).select().single());
- await run(db.from("conversation_members").insert([
-  {conversation_id:conv.id,user_id:state.user.id,member_role:"member"},
-  {conversation_id:conv.id,user_id:profile.id,member_role:"member"}
- ]));
- await loadConversations();
- const created=state.conversations.find(x=>x.id===conv.id);
- if(created)await openConversation(created);
-}
-
-/* ---------------- FRIENDS ---------------- */
-
-async function loadRequests(){
- const rows=await run(db.from("friendships").select("*")
-  .eq("addressee_id",state.user.id).eq("status","pending"));
- state.pending=rows;
-}
-async function searchPeople(term){
- const clean=term.trim().replace(/^@/,"");
- if(clean.length<2)throw Error("اكتب حرفين على الأقل للبحث.");
- const {data,error}=await db.from("profiles").select("id,display_name,username,nova_id,avatar_path,bio")
-  .or(`username.ilike.%${clean}%,display_name.ilike.%${clean}%,nova_id.ilike.%${clean}%`)
-  .neq("id",state.user.id).limit(30);
- if(error)throw error;
- state.people=data||[];return state.people;
-}
-async function sendFriendRequest(id){
- await run(db.from("friendships").insert({requester_id:state.user.id,addressee_id:id,status:"pending"}));
- toast("تم إرسال طلب الصداقة.");
-}
-async function acceptFriend(id){
- await run(db.from("friendships").update({status:"accepted"}).eq("id",id).eq("addressee_id",state.user.id));
- await loadRequests();toast("تم قبول طلب الصداقة.");
-}
-async function showFriends(){
- const rows=await run(db.from("friendships").select("*")
-  .or(`requester_id.eq.${state.user.id},addressee_id.eq.${state.user.id}`)
-  .eq("status","accepted"));
- const ids=[...new Set(rows.map(x=>x.requester_id===state.user.id?x.addressee_id:x.requester_id))];
- const people=ids.length?await run(db.from("profiles").select("*").in("id",ids)):[];
- showPage("friends",people.map(p=>({id:p.id,title:p.display_name,sub:p.nova_id,action:`<button class="primary" data-chat="${p.id}">مراسلة</button>`})));
-}
-
-/* ---------------- GROUPS ---------------- */
-
-async function loadGroups(){
- const memberships=await run(db.from("group_members").select("group_id").eq("user_id",state.user.id));
- if(!memberships.length){state.groups=[];return []}
- const ids=memberships.map(x=>x.group_id);
- state.groups=await run(db.from("groups").select("*").in("id",ids).order("created_at",{ascending:false}));
- return state.groups;
-}
-async function createGroup(name,description,isPrivate){
- const group=await run(db.from("groups").insert({
-  name,description,created_by:state.user.id,is_private:isPrivate
- }).select().single());
- await run(db.from("group_members").insert({
-  group_id:group.id,user_id:state.user.id,member_role:"owner"
- }));
- toast("تم إنشاء المجموعة.");
- await loadGroups();return group;
-}
-
-/* ---------------- STORIES ---------------- */
-
-async function loadStories(){
- const rows=await run(db.from("stories").select("id,author_id,body,storage_path,background,visibility,expires_at,created_at")
-  .gt("expires_at",new Date().toISOString()).order("created_at",{ascending:false}).limit(100));
- state.stories=rows;
- return rows;
-}
-async function createStory(body,file){
- let storage_path=null;
- if(file){const up=await uploadFile(file,"stories");storage_path=up.path}
- await run(db.from("stories").insert({
-  author_id:state.user.id,body:body||"",storage_path,
-  visibility:"friends",
-  expires_at:new Date(Date.now()+86400000).toISOString()
- }));
- toast("تم نشر الحالة لمدة 24 ساعة.");
-}
-
-/* ---------------- COMMUNITIES / CHANNELS ---------------- */
-
-async function loadPublicTable(table,fields="*"){
- return await run(db.from(table).select(fields).eq("is_public",true).order("created_at",{ascending:false}).limit(100));
-}
-async function createChannel(title,description,isPublic){
- return await run(db.from("channels").insert({
-  owner_id:state.user.id,title,description,is_public:isPublic
- }).select().single());
-}
-async function createCommunity(name,description,isPublic){
- return await run(db.from("communities").insert({
-  owner_id:state.user.id,name,description,is_public:isPublic
- }).select().single());
-}
-
-/* ---------------- SETTINGS ---------------- */
-
-async function loadSettings(){
- const result=await db.from("user_settings").select("*").eq("user_id",state.user.id).maybeSingle();
- if(result.error)throw result.error;
- state.settings=result.data||{language:"ar",theme:"dark",settings:{},privacy:{},notification_preferences:{}};
-}
-async function saveSettings(patch){
- const payload={
-  user_id:state.user.id,
-  language:patch.language||state.settings.language||"ar",
-  theme:patch.theme||state.settings.theme||"dark",
-  settings:patch.settings||state.settings.settings||{},
-  privacy:patch.privacy||state.settings.privacy||{},
-  notification_preferences:patch.notification_preferences||state.settings.notification_preferences||{},
-  updated_at:new Date().toISOString()
- };
- const saved=await run(db.from("user_settings").upsert(payload,{onConflict:"user_id"}).select().single());
- state.settings=saved;toast("تم حفظ الإعدادات.");
-}
-
-/* ---------------- PAGE RENDERING ---------------- */
-
-function showPage(page,rows=[]){
- state.page=page;
- $("#app").classList.remove("chat-open");
- $("#listTitle").textContent=({
-  chats:"المحادثات",friends:"الأصدقاء",groups:"المجموعات",
-  communities:"المجتمعات",channels:"القنوات",stories:"الحالات",
-  profile:"ملفي الشخصي",settings:"الإعدادات"
- })[page]||page;
- $("#tabs").style.display=page==="chats"?"flex":"none";
- $("#listArea").className="";
- $("#listArea").innerHTML="";
- $$(".nav").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
- if(page==="chats"){renderList();return}
- if(page==="profile"){renderProfile();return}
- if(page==="settings"){renderSettings();return}
- if(page==="friends"){renderFriendPage(rows);return}
- if(page==="groups"){renderGroupPage();return}
- if(page==="stories"){renderStoryPage();return}
- if(page==="channels"){renderChannelPage();return}
- if(page==="communities"){renderCommunityPage();return}
-}
-function renderFriendPage(rows){
- const area=$("#listArea");
- const search=document.createElement("button");search.className="primary full";search.textContent="البحث عن أشخاص";
- search.onclick=()=>modal("البحث عن أصدقاء",`
-  <input class="field" id="peopleQuery" placeholder="اسم المستخدم أو NOVA ID">
-  <button class="primary full" id="peopleSearchBtn">بحث</button>
-  <div id="peopleResults"></div>`);
- area.appendChild(search);
- const requests=document.createElement("button");requests.className="secondary full";requests.textContent=`طلبات الصداقة (${state.pending.length})`;
- requests.onclick=()=>modal("طلبات الصداقة",state.pending.map(r=>`
-  <div class="setting"><span>طلب صداقة</span><button class="primary" data-accept="${r.id}">قبول</button></div>`).join("")||'<p class="muted">لا توجد طلبات.</p>');
- area.appendChild(requests);
- rows.forEach(p=>addListRow(area,p.title,p.sub,p.action));
-}
-function addListRow(area,title,sub,action=""){
- const el=document.createElement("div");el.className="item";
- el.innerHTML=`<div class="avatar">${safe((title||"?").charAt(0))}</div><div class="info"><div class="name">${safe(title)}</div><div class="preview">${safe(sub||"")}</div></div>${action}`;
- area.appendChild(el);
-}
-async function renderGroupPage(){
- $("#listArea").innerHTML='<button class="primary full" id="createGroupBtn">إنشاء مجموعة</button><div id="groupRows"></div>';
- $("#createGroupBtn").onclick=()=>modal("إنشاء مجموعة",`
-  <input class="field" id="groupName" placeholder="اسم المجموعة">
-  <textarea class="field" id="groupDesc" placeholder="وصف المجموعة"></textarea>
-  <label class="muted"><input type="checkbox" id="groupPrivate"> مجموعة خاصة</label>
-  <button class="primary full" id="saveGroup">إنشاء</button>`);
- const rows=await loadGroups();
- const box=$("#groupRows");
- rows.forEach(g=>addListRow(box,g.name,g.description||"مجموعة NOVA"));
-}
-async function renderStoryPage(){
- $("#listArea").innerHTML='<button class="primary full" id="addStory">إضافة حالة</button><div id="storyRows"></div>';
- $("#addStory").onclick=()=>modal("حالة جديدة",`
-  <textarea class="field" id="storyText" placeholder="اكتب ما تريد مشاركته..."></textarea>
-  <input class="field" type="file" id="storyFile" accept="image/*,video/*">
-  <button class="primary full" id="publishStory">نشر الحالة</button>`);
- const rows=await loadStories();
- rows.forEach(s=>addListRow($("#storyRows"),s.body||"حالة بصورة",new Date(s.created_at).toLocaleString("ar-EG")));
-}
-async function renderChannelPage(){
- $("#listArea").innerHTML='<button class="primary full" id="newChannel">إنشاء قناة</button><div id="channelRows"></div>';
- $("#newChannel").onclick=()=>modal("إنشاء قناة",`
-  <input class="field" id="channelTitle" placeholder="اسم القناة">
-  <textarea class="field" id="channelDesc" placeholder="الوصف"></textarea>
-  <label class="muted"><input type="checkbox" id="channelPublic" checked> قناة عامة</label>
-  <button class="primary full" id="saveChannel">إنشاء</button>`);
- const rows=await loadPublicTable("channels");
- rows.forEach(c=>addListRow($("#channelRows"),c.title,c.description));
-}
-async function renderCommunityPage(){
- $("#listArea").innerHTML='<button class="primary full" id="newCommunity">إنشاء مجتمع</button><div id="communityRows"></div>';
- $("#newCommunity").onclick=()=>modal("إنشاء مجتمع",`
-  <input class="field" id="communityName" placeholder="اسم المجتمع">
-  <textarea class="field" id="communityDesc" placeholder="الوصف"></textarea>
-  <label class="muted"><input type="checkbox" id="communityPublic" checked> مجتمع عام</label>
-  <button class="primary full" id="saveCommunity">إنشاء</button>`);
- const rows=await loadPublicTable("communities");
- rows.forEach(c=>addListRow($("#communityRows"),c.name,c.description));
-}
-function renderProfile(){
- const p=state.profile||{};
- $("#content").innerHTML=`
- <div class="profile-cover" style="${p.cover_path?`background-image:url('${safe(p.cover_path)}');background-size:cover;background-position:center`:''}"></div>
- <div class="profile-avatar">${p.avatar_path?`<img src="${safe(p.avatar_path)}">`:safe((p.display_name||"N").charAt(0))}</div>
- <div class="profile-body">
-  <h2>${safe(p.display_name||"عضو NOVA")}</h2>
-  <p class="muted">${safe(p.nova_id||p.user_code||"")}</p>
-  <p>${safe(p.bio||"لا توجد نبذة بعد.")}</p>
-  <button class="primary" id="editProfile">تعديل الملف الشخصي</button>
- </div>`;
-}
-function renderSettings(){
- $("#content").innerHTML=`
- <h2>الإعدادات</h2>
- <div class="setting"><span>المظهر</span><select class="field" id="themeSelect" style="width:130px;margin:0"><option value="dark">داكن</option><option value="light">فاتح</option><option value="system">تلقائي</option></select></div>
- <div class="setting"><span>اللغة</span><select class="field" id="langSelect" style="width:130px;margin:0"><option value="ar">العربية</option><option value="en">English</option></select></div>
- <div class="setting"><span>الخصوصية</span><span class="muted">إعدادات الحساب</span></div>
- <button class="primary full" id="savePrefs">حفظ الإعدادات</button>
- <button class="danger full" id="logoutBtn">تسجيل الخروج</button>`;
- $("#themeSelect").value=state.settings?.theme||"dark";
- $("#langSelect").value=state.settings?.language||"ar";
-}
-
-/* ---------------- UI ACTION DELEGATION ---------------- */
-
-document.addEventListener("click",async e=>{
- const t=e.target;
- try{
-  if(t.closest("[data-chat]")){
-   const id=t.closest("[data-chat]").dataset.chat;
-   const p=state.people.find(x=>x.id===id)||state.conversations.find(x=>x.other?.id===id)?.other;
-   if(p){await startDirect(p);closeModal()}
-  }
-  if(t.closest("[data-accept]")){
-   await acceptFriend(t.closest("[data-accept]").dataset.accept);
-   t.closest("[data-accept]").remove();
-  }
-  if(t.id==="peopleSearchBtn"){
-   const rows=await searchPeople($("#peopleQuery").value);
-   $("#peopleResults").innerHTML=rows.map(p=>`
-    <div class="setting"><span>${safe(p.display_name)} <small class="muted">${safe(p.nova_id||"")}</small></span>
-    <button class="primary" data-add-friend="${p.id}">إضافة</button>
-    <button class="secondary" data-chat="${p.id}">مراسلة</button></div>`).join("")||'<p class="muted">لا توجد نتائج.</p>';
-  }
-  if(t.closest("[data-add-friend]")){
-   await sendFriendRequest(t.closest("[data-add-friend]").dataset.addFriend);
-   t.closest("[data-add-friend]").disabled=true;
-  }
-  if(t.id==="saveGroup"){
-   const name=$("#groupName").value.trim();
-   if(!name)throw Error("اكتب اسم المجموعة.");
-   await createGroup(name,$("#groupDesc").value,$("#groupPrivate").checked);
-   closeModal();await renderGroupPage();
-  }
-  if(t.id==="publishStory"){
-   await createStory($("#storyText").value,$("#storyFile").files[0]);
-   closeModal();await renderStoryPage();
-  }
-  if(t.id==="saveChannel"){
-   await createChannel($("#channelTitle").value.trim(),$("#channelDesc").value,$("#channelPublic").checked);
-   closeModal();await renderChannelPage();
-  }
-  if(t.id==="saveCommunity"){
-   await createCommunity($("#communityName").value.trim(),$("#communityDesc").value,$("#communityPublic").checked);
-   closeModal();await renderCommunityPage();
-  }
-  if(t.id==="editProfile"){
-   const p=state.profile;
-   modal("تعديل الملف الشخصي",`
-    <input class="field" name="display_name" id="editDisplay" value="${safe(p.display_name||"")}" placeholder="الاسم">
-    <input class="field" name="username" id="editUsername" value="${safe(p.username||"")}" placeholder="اسم المستخدم">
-    <textarea class="field" name="bio" id="editBio" placeholder="نبذة">${safe(p.bio||"")}</textarea>
-    <label class="muted">الصورة الشخصية</label><input class="field" type="file" id="profileAvatarFile" accept="image/*">
-    <label class="muted">صورة الغلاف</label><input class="field" type="file" id="profileCoverFile" accept="image/*">
-    <button class="primary full" id="saveProfileBtn">حفظ</button>`);
-  }
-  if(t.id==="saveProfileBtn"){
-   const fd=new FormData();
-   fd.set("display_name",$("#editDisplay").value);
-   fd.set("username",$("#editUsername").value);
-   fd.set("bio",$("#editBio").value);
-   await saveProfile(fd);closeModal();renderProfile();
-  }
-  if(t.id==="savePrefs"){
-   await saveSettings({theme:$("#themeSelect").value,language:$("#langSelect").value});
-  }
-  if(t.id==="logoutBtn")await logout();
-  if(t.id==="chatMore" && state.current){
-   modal("خيارات المحادثة",`
-    <button class="secondary full" id="refreshChat">تحديث الرسائل</button>
-    <button class="secondary full" id="closeChat">إغلاق المحادثة</button>`);
-  }
-  if(t.id==="refreshChat"){await loadMessages();closeModal()}
-  if(t.id==="closeChat"){state.current=null;unsubscribeConversation();$("#app").classList.remove("chat-open");$("#message").disabled=true;$("#sendBtn").disabled=true;closeModal()}
-  if(t.id==="callBtn"||t.id==="videoBtn")toast("المكالمات تحتاج تجهيز خدمة WebRTC والإشارة قبل تشغيلها.");
-  if(t.id==="searchInChat"){
-   modal("البحث في المحادثة",`<input class="field" id="chatSearchTerm" placeholder="ابحث داخل الرسائل"><div id="chatSearchResults"></div>`);
-  }
- }catch(err){toast(errorText(err))}
 });
-
-$$(".nav[data-page]").forEach(b=>b.addEventListener("click",async()=>{
- try{
-  const page=b.dataset.page;
-  if(page==="friends")await showFriends();
-  else showPage(page);
- }catch(e){toast(errorText(e))}
-}));
-$("#newBtn").onclick=()=>modal("إنشاء جديد",`
- <button class="secondary full" id="newFriend">البحث عن صديق</button>
- <button class="secondary full" id="newGroup">إنشاء مجموعة</button>
- <button class="secondary full" id="newStory">إضافة حالة</button>`);
-$("#back").onclick=()=>$("#app").classList.remove("chat-open");
-$("#attachBtn").onclick=()=>toast("رفع المرفقات في المحادثات يحتاج تحديد bucket وسياسات Storage.");
-$("#chatSearchTerm")?.addEventListener("input",()=>{});
-$("#content").addEventListener("click",e=>{
- if(e.target.id==="editProfile")return;
-});
-$("#message").addEventListener("keydown",e=>{
- if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#composer").requestSubmit()}
-});
-
-/* ---------------- START ---------------- */
-
-(async()=>{
- try{await boot()}
- catch(e){
-  console.error(e);
-  showAuth("تعذر الاتصال أو تحميل الحساب: "+errorText(e));
- }
-})();
 </script>
 </body>
 </html>
