@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0D1018">
+  <title>NOVA — حسابك</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/tokens.css">
+  <link rel="stylesheet" href="./css/auth.css">
+</head>
+<body>
+  <main class="auth-page">
+
+    <section class="auth-brand">
+      <div class="brand-mark">N</div>
+      <div class="brand-name">NOVA</div>
+      <p>مساحة جديدة للتواصل</p>
+    </section>
+
+    <section class="auth-card">
+      <div class="auth-heading">
+        <span class="eyebrow">مرحباً بك في NOVA</span>
+        <h1 id="auth-title">تسجيل الدخول</h1>
+        <p id="auth-description">سجّل دخولك للمتابعة إلى حسابك.</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" type="button" data-mode="login">دخول</button>
+        <button class="auth-tab" type="button" data-mode="register">حساب جديد</button>
+      </div>
+
+      <form id="auth-form" novalidate>
+        <div class="field-group" id="name-field" hidden>
+          <label for="display-name">الاسم</label>
+          <input id="display-name" name="displayName" type="text"
+                 autocomplete="name" placeholder="اكتب اسمك">
+          <small class="field-error" data-error="displayName"></small>
+        </div>
+
+        <div class="field-group">
+          <label for="email">البريد الإلكتروني</label>
+          <input id="email" name="email" type="email"
+                 autocomplete="email" inputmode="email"
+                 placeholder="name@example.com" required>
+          <small class="field-error" data-error="email"></small>
+        </div>
+
+        <div class="field-group">
+          <label for="password">كلمة المرور</label>
+          <input id="password" name="password" type="password"
+                 autocomplete="current-password"
+                 placeholder="أدخل كلمة المرور" required>
+          <small class="field-error" data-error="password"></small>
+        </div>
+
+        <div class="field-group" id="confirm-field" hidden>
+          <label for="confirm-password">تأكيد كلمة المرور</label>
+          <input id="confirm-password" name="confirmPassword"
+                 type="password" autocomplete="new-password"
+                 placeholder="أعد كتابة كلمة المرور">
+          <small class="field-error" data-error="confirmPassword"></small>
+        </div>
+
+        <button class="forgot-password" id="forgot-password" type="button">
+          نسيت كلمة المرور؟
+        </button>
+
+        <p class="auth-message" id="auth-message"
+           role="status" aria-live="polite"></p>
+
+        <button class="submit-button" id="auth-submit" type="submit">
+          <span id="submit-label">تسجيل الدخول</span>
+          <span class="submit-arrow" aria-hidden="true">←</span>
+        </button>
+      </form>
+
+      <div class="auth-divider"><span>أو تابع باستخدام</span></div>
+
+      <button class="google-button" id="google-signin" type="button">
+        <svg class="google-logo" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.73 7.18l7.57 5.87c4.42-4.08 7.2-10.09 7.2-17.52Z"/>
+          <path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19Z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.94-2.13 15.92-5.93l-7.57-5.87c-2.1 1.41-4.79 2.25-8.35 2.25-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z"/>
+        </svg>
+        <span>المتابعة باستخدام Google</span>
+      </button>
+
+      <p class="auth-footer">
+        بالمتابعة، أنت توافق على شروط الاستخدام وسياسة الخصوصية.
+      </p>
+    </section>
+
+    <footer class="page-footer">NOVA Messenger · تواصل بلا حدود</footer>
+  </main>
+
+  <script type="module" src="./js/auth.js"></script>
+</body>
+</html>
